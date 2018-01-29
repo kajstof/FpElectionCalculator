@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpElectionCalculator.Tests", "FpElectionCalculator.Tests\FpElectionCalculator.Tests.csproj", "{7B516359-C715-437F-817B-3501B9FC41FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpElectionCalculator.CLI", "FpElectionCalculator.CLI\FpElectionCalculator.CLI.csproj", "{34B2BF63-0FA7-4902-888C-AF257E2CA106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpElectionCalculator.Library", "FpElectionCalculator.Library\FpElectionCalculator.Library.csproj", "{018E61B4-4A18-4332-B337-0AD3F7363493}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7B516359-C715-437F-817B-3501B9FC41FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B516359-C715-437F-817B-3501B9FC41FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B516359-C715-437F-817B-3501B9FC41FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B2BF63-0FA7-4902-888C-AF257E2CA106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B2BF63-0FA7-4902-888C-AF257E2CA106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B2BF63-0FA7-4902-888C-AF257E2CA106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B2BF63-0FA7-4902-888C-AF257E2CA106}.Release|Any CPU.Build.0 = Release|Any CPU
+		{018E61B4-4A18-4332-B337-0AD3F7363493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{018E61B4-4A18-4332-B337-0AD3F7363493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{018E61B4-4A18-4332-B337-0AD3F7363493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{018E61B4-4A18-4332-B337-0AD3F7363493}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
