@@ -13,4 +13,8 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FpElectionCalculator.Library\FpElectionCalculator.Library.csproj" />
+  </ItemGroup>
+
 </Project>
