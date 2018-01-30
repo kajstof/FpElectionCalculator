@@ -12,7 +12,6 @@ namespace FpElectionCalculator.Library
     // -----------------------------------------------------------------
     public class PeselValidator
     {
-
         private byte[] pesel = new byte[11];
         private bool valid = false;
 
