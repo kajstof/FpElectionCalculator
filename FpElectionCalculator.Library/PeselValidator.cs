@@ -28,7 +28,7 @@ namespace FpElectionCalculator.Library
                     this.pesel[i] = byte.Parse(pesel[i].ToString());
                 }
 
-                if (checkMonth() && checkDay() && checkSum())
+                if (CheckMonth() && CheckDay() && CheckSum())
                 {
                     valid = true;
                 }
@@ -44,7 +44,7 @@ namespace FpElectionCalculator.Library
             return valid;
         }
 
-        public int getBirthYear()
+        public int GetBirthYear()
         {
             int year;
             int month;
@@ -75,7 +75,7 @@ namespace FpElectionCalculator.Library
             return year;
         }
 
-        public int getBirthMonth()
+        public int GetBirthMonth()
         {
             int month;
             month = 10 * pesel[2];
@@ -100,7 +100,7 @@ namespace FpElectionCalculator.Library
         }
 
 
-        public int getBirthDay()
+        public int GetBirthDay()
         {
             int day;
             day = 10 * pesel[4];
@@ -108,7 +108,7 @@ namespace FpElectionCalculator.Library
             return day;
         }
 
-        public String getSex()
+        public String GetSex()
         {
             if (valid)
             {
@@ -127,7 +127,7 @@ namespace FpElectionCalculator.Library
             }
         }
 
-        private bool checkSum()
+        private bool CheckSum()
         {
             int sum = 1 * pesel[0] +
             3 * pesel[1] +
@@ -153,10 +153,10 @@ namespace FpElectionCalculator.Library
             }
         }
 
-        private bool checkMonth()
+        private bool CheckMonth()
         {
-            int month = getBirthMonth();
-            int day = getBirthDay();
+            int month = GetBirthMonth();
+            int day = GetBirthDay();
             if (month > 0 && month < 13)
             {
                 return true;
@@ -167,11 +167,11 @@ namespace FpElectionCalculator.Library
             }
         }
 
-        private bool checkDay()
+        private bool CheckDay()
         {
-            int year = getBirthYear();
-            int month = getBirthMonth();
-            int day = getBirthDay();
+            int year = GetBirthYear();
+            int month = GetBirthMonth();
+            int day = GetBirthDay();
             if ((day > 0 && day < 32) &&
             (month == 1 || month == 3 || month == 5 ||
             month == 7 || month == 8 || month == 10 ||
@@ -185,8 +185,8 @@ namespace FpElectionCalculator.Library
             {
                 return true;
             }
-            else if ((day > 0 && day < 30 && leapYear(year)) ||
-            (day > 0 && day < 29 && !leapYear(year)))
+            else if ((day > 0 && day < 30 && LeapYear(year)) ||
+            (day > 0 && day < 29 && !LeapYear(year)))
             {
                 return true;
             }
@@ -196,7 +196,7 @@ namespace FpElectionCalculator.Library
             }
         }
 
-        private bool leapYear(int year)
+        private bool LeapYear(int year)
         {
             if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
                 return true;
