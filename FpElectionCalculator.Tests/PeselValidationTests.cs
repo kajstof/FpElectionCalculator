@@ -1,4 +1,4 @@
-﻿using FpElectionCalculator.Library;
+﻿using FpElectionCalculator.Domain;
 using System;
 using System.Linq;
 using Xunit;

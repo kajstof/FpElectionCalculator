@@ -1,4 +1,4 @@
-﻿namespace FpElectionCalculator.Library.Models
+﻿namespace FpElectionCalculator.Domain.DbModels
 {
     public class Course
     {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace FpElectionCalculator.Library.Migrations
+namespace FpElectionCalculator.Domain.Migrations
 {
     public partial class CreateSchoolDb : Migration
     {
