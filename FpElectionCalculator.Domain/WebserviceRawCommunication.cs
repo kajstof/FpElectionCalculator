@@ -4,11 +4,11 @@ using System.Net.Http;
 
 namespace FpElectionCalculator
 {
-    public class RawCommunication
+    public class WebserviceRawCommunication
     {
         private bool xml;
 
-        public RawCommunication(bool xml = false)
+        public WebserviceRawCommunication(bool xml = false)
         {
             this.xml = xml;
         }

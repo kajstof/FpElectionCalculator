@@ -10,6 +10,6 @@ namespace FpElectionCalculator.Domain.JsonModels
         [JsonProperty("publicationDate")]
         public DateTime PublicationDate { get; set; }
         [JsonProperty("person")]
-        public IList<Person> DisallowedPeople { get; set; }
+        public IList<DisallowedPerson> DisallowedPeople { get; set; }
     }
 }

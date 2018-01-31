@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FpElectionCalculator.Domain.JsonModels
 {
-    public class Person
+    public class DisallowedPerson
     {
         [JsonProperty("pesel")]
         public ulong Pesel { get; set; }

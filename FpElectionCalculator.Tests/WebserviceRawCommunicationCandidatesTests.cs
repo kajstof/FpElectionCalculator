@@ -5,18 +5,18 @@ using Xunit.Abstractions;
 
 namespace FpElectionCalculator.Tests
 {
-    public class RawCommunicationBlockedTests
+    public class WebserviceRawCommunicationCandidatesTests
     {
         private readonly ITestOutputHelper output;
 
-        public RawCommunicationBlockedTests(ITestOutputHelper output)
+        public WebserviceRawCommunicationCandidatesTests(ITestOutputHelper output)
         {
             this.output = output;
         }
 
         private string Execute(bool xml = false)
         {
-            return new RawCommunication(xml).getPeopleDisallowedToVote();
+            return new WebserviceRawCommunication(xml).getCandidates();
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace FpElectionCalculator.Tests
         public void ParseJsonResponse()
         {
             string json = Execute();
-            var ex = Record.Exception(() => JObject.Parse(json).SelectToken("disallowed").ToObject<DisallowedPeopleList>());
+            var ex = Record.Exception(() => JObject.Parse(json).SelectToken("candidates").ToObject<CandidatesList>());
             Assert.Null(ex);
         }
 
