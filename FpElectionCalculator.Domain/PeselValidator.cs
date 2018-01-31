@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FpElectionCalculator.Library
+namespace FpElectionCalculator.Domain
 {
     // -----------------------------------------------------------------
     // Class written by Tomasz Lubinski and ported from Java to C#

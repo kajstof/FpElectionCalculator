@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FpElectionCalculator.Library
+namespace FpElectionCalculator.Domain.JsonModels
 {
     public class Person
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FpElectionCalculator.Library
+namespace FpElectionCalculator.Domain
 {
     public class ElectionCalculator
     {

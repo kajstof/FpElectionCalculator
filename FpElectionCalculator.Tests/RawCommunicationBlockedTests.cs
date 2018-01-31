@@ -1,4 +1,4 @@
-﻿using FpElectionCalculator.Library;
+﻿using FpElectionCalculator.Domain.JsonModels;
 using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;

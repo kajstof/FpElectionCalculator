@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace FpElectionCalculator.Library
+namespace FpElectionCalculator.Domain.JsonModels
 {
     public class Candidate
     {

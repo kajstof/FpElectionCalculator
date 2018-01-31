@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FpElectionCalculator.Library.Models
+namespace FpElectionCalculator.Domain.DbModels
 {
     public class Student
     {
