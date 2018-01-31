@@ -5,6 +5,6 @@ namespace FpElectionCalculator.Domain.JsonModels
     public class Person
     {
         [JsonProperty("pesel")]
-        public ulong Pesel { get; set; }
+        public string Pesel { get; set; }
     }
 }

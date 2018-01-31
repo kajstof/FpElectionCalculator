@@ -26,7 +26,7 @@ namespace FpElectionCalculator.Domain.Models
             {
                 for (int i = 0; i < 11; i++)
                 {
-                    this.peselByte[i] = byte.Parse(pesel[i].ToString());
+                    peselByte[i] = byte.Parse(pesel[i].ToString());
                 }
 
                 if (CheckMonth() && CheckDay() && CheckSum())
