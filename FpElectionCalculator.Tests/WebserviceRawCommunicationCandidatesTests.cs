@@ -1,5 +1,4 @@
-﻿using FpElectionCalculator.Domain.JsonModels;
-using Newtonsoft.Json.Linq;
+﻿using FpElectionCalculator.Domain;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,14 +24,6 @@ namespace FpElectionCalculator.Tests
             string results = Execute();
             output.WriteLine($"Return response:\n{results}");
             Assert.NotEmpty(results);
-        }
-
-        [Fact]
-        public void ParseJsonResponse()
-        {
-            string json = Execute();
-            var ex = Record.Exception(() => JObject.Parse(json).SelectToken("candidates").ToObject<CandidatesList>());
-            Assert.Null(ex);
         }
 
         [Fact]

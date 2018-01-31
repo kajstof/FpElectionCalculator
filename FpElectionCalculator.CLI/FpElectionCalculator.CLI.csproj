@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FpElectionCalculator.Domain\FpElectionCalculator.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

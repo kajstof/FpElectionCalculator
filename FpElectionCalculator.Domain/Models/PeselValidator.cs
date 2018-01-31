@@ -1,22 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FpElectionCalculator.Domain
+namespace FpElectionCalculator.Domain.Models
 {
     // -----------------------------------------------------------------
-    // Class written by Tomasz Lubinski and ported from Java to C#
+    // Class written by Tomasz Lubinski, originally written in Java
     // http://www.algorytm.org/numery-identyfikacyjne/pesel/pesel-j.html
+    // This class is slightly modified and ported to C#
     // -----------------------------------------------------------------
     // PS. http://www.bogus.ovh.org/generatory/all.html - is not working
     // -----------------------------------------------------------------
-    public class PeselValidator
+    public class Pesel
     {
-        private byte[] pesel = new byte[11];
+        private byte[] peselByte = new byte[11];
+        private string peselString;
         private bool valid = false;
 
-        public PeselValidator(string pesel)
+        public Pesel(string pesel)
         {
+            peselString = pesel;
             if (pesel.Length != 11)
             {
                 valid = false;
@@ -25,7 +26,7 @@ namespace FpElectionCalculator.Domain
             {
                 for (int i = 0; i < 11; i++)
                 {
-                    this.pesel[i] = byte.Parse(pesel[i].ToString());
+                    this.peselByte[i] = byte.Parse(pesel[i].ToString());
                 }
 
                 if (CheckMonth() && CheckDay() && CheckSum())
@@ -48,10 +49,10 @@ namespace FpElectionCalculator.Domain
         {
             int year;
             int month;
-            year = 10 * pesel[0];
-            year += pesel[1];
-            month = 10 * pesel[2];
-            month += pesel[3];
+            year = 10 * peselByte[0];
+            year += peselByte[1];
+            month = 10 * peselByte[2];
+            month += peselByte[3];
             if (month > 80 && month < 93)
             {
                 year += 1800;
@@ -78,8 +79,8 @@ namespace FpElectionCalculator.Domain
         public int GetBirthMonth()
         {
             int month;
-            month = 10 * pesel[2];
-            month += pesel[3];
+            month = 10 * peselByte[2];
+            month += peselByte[3];
             if (month > 80 && month < 93)
             {
                 month -= 80;
@@ -103,8 +104,8 @@ namespace FpElectionCalculator.Domain
         public int GetBirthDay()
         {
             int day;
-            day = 10 * pesel[4];
-            day += pesel[5];
+            day = 10 * peselByte[4];
+            day += peselByte[5];
             return day;
         }
 
@@ -112,7 +113,7 @@ namespace FpElectionCalculator.Domain
         {
             if (valid)
             {
-                if (pesel[9] % 2 == 1)
+                if (peselByte[9] % 2 == 1)
                 {
                     return "Male";
                 }
@@ -129,21 +130,21 @@ namespace FpElectionCalculator.Domain
 
         private bool CheckSum()
         {
-            int sum = 1 * pesel[0] +
-            3 * pesel[1] +
-            7 * pesel[2] +
-            9 * pesel[3] +
-            1 * pesel[4] +
-            3 * pesel[5] +
-            7 * pesel[6] +
-            9 * pesel[7] +
-            1 * pesel[8] +
-            3 * pesel[9];
+            int sum = 1 * peselByte[0] +
+            3 * peselByte[1] +
+            7 * peselByte[2] +
+            9 * peselByte[3] +
+            1 * peselByte[4] +
+            3 * peselByte[5] +
+            7 * peselByte[6] +
+            9 * peselByte[7] +
+            1 * peselByte[8] +
+            3 * peselByte[9];
             sum %= 10;
             sum = 10 - sum;
             sum %= 10;
 
-            if (sum == pesel[10])
+            if (sum == peselByte[10])
             {
                 return true;
             }
@@ -202,6 +203,11 @@ namespace FpElectionCalculator.Domain
                 return true;
             else
                 return false;
+        }
+
+        public override string ToString()
+        {
+            return peselString;
         }
     }
 }

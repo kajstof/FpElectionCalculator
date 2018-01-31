@@ -1,6 +1,4 @@
-﻿using FpElectionCalculator.Domain;
-using System;
-using System.Linq;
+﻿using FpElectionCalculator.Domain.Models;
 using Xunit;
 
 namespace FpElectionCalculator.Tests
@@ -11,7 +9,7 @@ namespace FpElectionCalculator.Tests
         [InlineData(99010112342)]
         public void ValidPeselReturnsTrue(ulong pesel)
         {
-            Assert.True(new PeselValidator(pesel.ToString()).IsValid());
+            Assert.True(new Pesel(pesel.ToString()).IsValid());
         }
 
         [Theory]
@@ -21,7 +19,7 @@ namespace FpElectionCalculator.Tests
         [InlineData(67109945623)]
         public void InvalidPeselReturnsFalse(ulong pesel)
         {
-            Assert.False(new PeselValidator(pesel.ToString()).IsValid());
+            Assert.False(new Pesel(pesel.ToString()).IsValid());
         }
     }
 }

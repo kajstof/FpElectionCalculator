@@ -1,0 +1,59 @@
+﻿{
+  "candidates": {
+    "publicationDate": "2018-02-01 00:02:49",
+    "candidate": [
+      {
+        "name": "Mieszko I",
+        "party": "Piastowie"
+      },
+      {
+        "name": "Bolesław Chrobry",
+        "party": "Piastowie"
+      },
+      {
+        "name": "Władysław Łokietek",
+        "party": "Piastowie"
+      },
+      {
+        "name": "Kazimierz Wielki",
+        "party": "Piastowie"
+      },
+      {
+        "name": "Władysław Jagiełło",
+        "party": "Dynastia Jagiellonów"
+      },
+      {
+        "name": "Władysław Warneńczyk",
+        "party": "Dynastia Jagiellonów"
+      },
+      {
+        "name": "Zygmunt Stary",
+        "party": "Dynastia Jagiellonów"
+      },
+      {
+        "name": "Henryk Walezy",
+        "party": "Elekcyjni dla Polski"
+      },
+      {
+        "name": "Anna Jagiellonka",
+        "party": "Elekcyjni dla Polski"
+      },
+      {
+        "name": "Stefan Batory",
+        "party": "Elekcyjni dla Polski"
+      },
+      {
+        "name": "Zygmunt Waza",
+        "party": "Wazowie"
+      },
+      {
+        "name": "Władysław Waza",
+        "party": "Wazowie"
+      },
+      {
+        "name": "Jan Kazimierz",
+        "party": "Wazowie"
+      }
+    ]
+  }
+}

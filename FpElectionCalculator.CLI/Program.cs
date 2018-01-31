@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FpElectionCalculator.Domain;
+using FpElectionCalculator.Domain.Models;
+using System;
 
 namespace FpElectionCalculator.CLI
 {
@@ -6,7 +8,18 @@ namespace FpElectionCalculator.CLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string firstName = "Krzysztof";
+            string lastName = "Krysiak";
+            string pesel = "86030218897";
+            User user = new User(firstName, lastName, pesel);
+            if (user.Login())
+            {
+                // User logged
+            }
+            else
+            {
+                // User not logged
+            }
         }
     }
 }

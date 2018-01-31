@@ -1,15 +1,14 @@
-﻿using FpElectionCalculator.Domain.JsonModels;
-using Newtonsoft.Json.Linq;
+﻿using FpElectionCalculator.Domain;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace FpElectionCalculator.Tests
 {
-    public class WebserviceRawCommunicationBlockedTests
+    public class WebserviceRawCommunicationDisallowedTests
     {
         private readonly ITestOutputHelper output;
 
-        public WebserviceRawCommunicationBlockedTests(ITestOutputHelper output)
+        public WebserviceRawCommunicationDisallowedTests(ITestOutputHelper output)
         {
             this.output = output;
         }
@@ -25,14 +24,6 @@ namespace FpElectionCalculator.Tests
             string results = Execute();
             output.WriteLine($"Return response:\n{results}");
             Assert.NotEmpty(results);
-        }
-
-        [Fact]
-        public void ParseJsonResponse()
-        {
-            string json = Execute();
-            var ex = Record.Exception(() => JObject.Parse(json).SelectToken("disallowed").ToObject<DisallowedPeopleList>());
-            Assert.Null(ex);
         }
 
         [Fact]
