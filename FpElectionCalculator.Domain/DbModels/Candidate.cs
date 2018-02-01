@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FpElectionCalculator.Domain.DbModels
@@ -11,5 +12,7 @@ namespace FpElectionCalculator.Domain.DbModels
         public string Name { get; set; }
         public int PartyID { get; set; }
         public Party Party { get; set; }
+
+        public ICollection<Vote> Votes { get; set; }
     }
 }

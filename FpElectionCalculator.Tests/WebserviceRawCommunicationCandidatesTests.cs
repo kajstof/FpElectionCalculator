@@ -15,7 +15,7 @@ namespace FpElectionCalculator.Tests
 
         private string Execute(bool xml = false)
         {
-            return new WebserviceRawCommunication(xml).getCandidates();
+            return new WebserviceRawCommunication(xml).GetCandidates();
         }
 
         [Fact]

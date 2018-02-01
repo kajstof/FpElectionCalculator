@@ -23,6 +23,22 @@ namespace FpElectionCalculator.Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Comment = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: true),
+                    Pesel = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Candidates",
                 columns: table => new
                 {
@@ -43,32 +59,28 @@ namespace FpElectionCalculator.Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Votes",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(nullable: false)
+                    VoteID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CandidateID = table.Column<int>(nullable: true),
-                    Comment = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(maxLength: 50, nullable: true),
-                    LastName = table.Column<string>(maxLength: 50, nullable: true),
-                    PartyID = table.Column<int>(nullable: false),
-                    Pesel = table.Column<string>(nullable: true)
+                    UserID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserID);
+                    table.PrimaryKey("PK_Votes", x => x.VoteID);
                     table.ForeignKey(
-                        name: "FK_Users_Candidates_CandidateID",
+                        name: "FK_Votes_Candidates_CandidateID",
                         column: x => x.CandidateID,
                         principalTable: "Candidates",
                         principalColumn: "CandidateID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Users_Parties_PartyID",
-                        column: x => x.PartyID,
-                        principalTable: "Parties",
-                        principalColumn: "PartyID",
+                        name: "FK_Votes_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -78,23 +90,26 @@ namespace FpElectionCalculator.Domain.Migrations
                 column: "PartyID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_CandidateID",
-                table: "Users",
+                name: "IX_Votes_CandidateID",
+                table: "Votes",
                 column: "CandidateID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_PartyID",
-                table: "Users",
-                column: "PartyID");
+                name: "IX_Votes_UserID",
+                table: "Votes",
+                column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Votes");
 
             migrationBuilder.DropTable(
                 name: "Candidates");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Parties");

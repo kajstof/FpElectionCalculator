@@ -15,7 +15,7 @@ namespace FpElectionCalculator.Tests
 
         private string Execute(bool xml = false)
         {
-            return new WebserviceRawCommunication(xml).getPeopleDisallowedToVote();
+            return new WebserviceRawCommunication(xml).GetPeopleDisallowedToVote();
         }
 
         [Fact]

@@ -11,7 +11,7 @@ using System;
 namespace FpElectionCalculator.Domain.Migrations
 {
     [DbContext(typeof(ElectionDbContext))]
-    [Migration("20180201132010_CreateElectionDb")]
+    [Migration("20180201190934_CreateElectionDb")]
     partial class CreateElectionDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,8 +55,6 @@ namespace FpElectionCalculator.Domain.Migrations
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CandidateID");
-
                     b.Property<string>("Comment");
 
                     b.Property<string>("FirstName")
@@ -65,17 +63,29 @@ namespace FpElectionCalculator.Domain.Migrations
                     b.Property<string>("LastName")
                         .HasMaxLength(50);
 
-                    b.Property<int>("PartyID");
-
                     b.Property<string>("Pesel");
 
                     b.HasKey("UserID");
 
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Vote", b =>
+                {
+                    b.Property<int>("VoteID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CandidateID");
+
+                    b.Property<int>("UserID");
+
+                    b.HasKey("VoteID");
+
                     b.HasIndex("CandidateID");
 
-                    b.HasIndex("PartyID");
+                    b.HasIndex("UserID");
 
-                    b.ToTable("Users");
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Candidate", b =>
@@ -86,15 +96,15 @@ namespace FpElectionCalculator.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.User", b =>
+            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Vote", b =>
                 {
                     b.HasOne("FpElectionCalculator.Domain.DbModels.Candidate", "Candidate")
-                        .WithMany()
+                        .WithMany("Votes")
                         .HasForeignKey("CandidateID");
 
-                    b.HasOne("FpElectionCalculator.Domain.DbModels.Party", "Party")
-                        .WithMany()
-                        .HasForeignKey("PartyID")
+                    b.HasOne("FpElectionCalculator.Domain.DbModels.User", "User")
+                        .WithMany("Votes")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

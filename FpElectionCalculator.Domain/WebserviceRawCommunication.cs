@@ -13,7 +13,7 @@ namespace FpElectionCalculator.Domain
             this.xml = xml;
         }
 
-        private string getHttp(string queryString)
+        private string GetHttp(string queryString)
         {
             string url = $"http://webtask.future-processing.com:8069/{queryString}";
             var httpClient = new HttpClient();
@@ -24,14 +24,14 @@ namespace FpElectionCalculator.Domain
             return httpClient.GetAsync(url).Result.Content.ReadAsStringAsync().Result;
         }
 
-        public string getCandidates()
+        public string GetCandidates()
         {
-            return getHttp("candidates");
+            return GetHttp("candidates");
         }
 
-        public string getPeopleDisallowedToVote()
+        public string GetPeopleDisallowedToVote()
         {
-            return getHttp("blocked");
+            return GetHttp("blocked");
         }
     }
 }
