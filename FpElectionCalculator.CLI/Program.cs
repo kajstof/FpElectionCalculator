@@ -1,4 +1,5 @@
-﻿using FpElectionCalculator.Domain.Models;
+﻿using FpElectionCalculator.Domain;
+using FpElectionCalculator.Domain.Models;
 using System;
 
 namespace FpElectionCalculator.CLI
@@ -10,6 +11,8 @@ namespace FpElectionCalculator.CLI
             string firstName = "Krzysztof";
             string lastName = "Krysiak";
             string pesel = "86030218897";
+            ElectionCalculator el = new ElectionCalculator();
+            el.Run();
             User user = new User(firstName, lastName, pesel);
             if (user.Login())
             {

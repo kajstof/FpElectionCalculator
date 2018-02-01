@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FpElectionCalculator.Domain.DbModels
 {
+    [Table("Candidates")]
     public class Candidate
     {
         public int CandidateId { get; set; }
