@@ -6,12 +6,12 @@ namespace FpElectionCalculator.Domain.DbModels
     [Table("Votes")]
     public class Vote
     {
-        public int VoteId { get; set; }
-        public int CandidateId { get; set; }
-        public Candidate Candidate { get; set; }
-        public int PartyId { get; set; }
-        public Party Party { get; set; }
+        public int VoteID { get; set; }
+        //public int CandidateID { get; set; }
+        //public Candidate Candidate { get; set; }
+        //public int PartyID { get; set; }
+        //public Party Party { get; set; }
 
-        public IList<User> Users { get; set; }
+        //public IList<User> Users { get; set; }
     }
 }

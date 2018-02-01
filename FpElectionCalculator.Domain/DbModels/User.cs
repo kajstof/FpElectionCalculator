@@ -7,7 +7,7 @@ namespace FpElectionCalculator.Domain.DbModels
     [Table("Users")]
     public class User
     {
-        public int UserId { get; set; }
+        public int UserID { get; set; }
         [MaxLength(50)]
         public string FirstName { get; set; }
         [MaxLength(50)]
@@ -22,12 +22,12 @@ namespace FpElectionCalculator.Domain.DbModels
             set => _pesel = value;
         }
 
-        public int? CandidateId { get; set; }
-        public Candidate Candidate { get; set; }
-        //public int PartyId { get; set; }
+        //public int? CandidateID { get; set; }
+        //public Candidate Candidate { get; set; }
+        //public int PartyID { get; set; }
         //public Party Party { get; set; }
-        //public int VoteId { get; set; }
-        //public Vote Vote { get; set; }
+        public int? VoteID { get; set; }
+        public Vote Vote { get; set; }
         public string Comment { get; set; }
     }
 }

@@ -22,39 +22,39 @@ namespace FpElectionCalculator.Domain.Migrations
 
             modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Candidate", b =>
                 {
-                    b.Property<int>("CandidateId")
+                    b.Property<int>("CandidateID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .HasMaxLength(100);
 
-                    b.Property<int>("PartyId");
+                    b.Property<int>("PartyID");
 
-                    b.HasKey("CandidateId");
+                    b.HasKey("CandidateID");
 
-                    b.HasIndex("PartyId");
+                    b.HasIndex("PartyID");
 
                     b.ToTable("Candidates");
                 });
 
             modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Party", b =>
                 {
-                    b.Property<int>("PartyId")
+                    b.Property<int>("PartyID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
-                    b.HasKey("PartyId");
+                    b.HasKey("PartyID");
 
                     b.ToTable("Parties");
                 });
 
             modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CandidateId");
+                    b.Property<int?>("CandidateID");
 
                     b.Property<string>("Comment");
 
@@ -64,11 +64,15 @@ namespace FpElectionCalculator.Domain.Migrations
                     b.Property<string>("LastName")
                         .HasMaxLength(50);
 
+                    b.Property<int>("PartyID");
+
                     b.Property<string>("Pesel");
 
-                    b.HasKey("UserId");
+                    b.HasKey("UserID");
 
-                    b.HasIndex("CandidateId");
+                    b.HasIndex("CandidateID");
+
+                    b.HasIndex("PartyID");
 
                     b.ToTable("Users");
                 });
@@ -77,7 +81,7 @@ namespace FpElectionCalculator.Domain.Migrations
                 {
                     b.HasOne("FpElectionCalculator.Domain.DbModels.Party", "Party")
                         .WithMany("Candidates")
-                        .HasForeignKey("PartyId")
+                        .HasForeignKey("PartyID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -85,7 +89,12 @@ namespace FpElectionCalculator.Domain.Migrations
                 {
                     b.HasOne("FpElectionCalculator.Domain.DbModels.Candidate", "Candidate")
                         .WithMany()
-                        .HasForeignKey("CandidateId");
+                        .HasForeignKey("CandidateID");
+
+                    b.HasOne("FpElectionCalculator.Domain.DbModels.Party", "Party")
+                        .WithMany()
+                        .HasForeignKey("PartyID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

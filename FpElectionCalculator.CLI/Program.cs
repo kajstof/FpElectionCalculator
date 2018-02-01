@@ -12,16 +12,7 @@ namespace FpElectionCalculator.CLI
             string lastName = "Krysiak";
             string pesel = "86030218897";
             ElectionCalculator el = new ElectionCalculator();
-            el.Run();
-            User user = new User(firstName, lastName, pesel);
-            if (user.Login())
-            {
-                // User logged
-            }
-            else
-            {
-                // User not logged
-            }
+            ElectionCalculator.Run();
         }
     }
 }

@@ -13,32 +13,32 @@ namespace FpElectionCalculator.Domain.Migrations
                 name: "Parties",
                 columns: table => new
                 {
-                    PartyId = table.Column<int>(nullable: false)
+                    PartyID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parties", x => x.PartyId);
+                    table.PrimaryKey("PK_Parties", x => x.PartyID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Candidates",
                 columns: table => new
                 {
-                    CandidateId = table.Column<int>(nullable: false)
+                    CandidateID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 100, nullable: true),
-                    PartyId = table.Column<int>(nullable: false)
+                    PartyID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Candidates", x => x.CandidateId);
+                    table.PrimaryKey("PK_Candidates", x => x.CandidateID);
                     table.ForeignKey(
-                        name: "FK_Candidates_Parties_PartyId",
-                        column: x => x.PartyId,
+                        name: "FK_Candidates_Parties_PartyID",
+                        column: x => x.PartyID,
                         principalTable: "Parties",
-                        principalColumn: "PartyId",
+                        principalColumn: "PartyID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -46,34 +46,46 @@ namespace FpElectionCalculator.Domain.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
+                    UserID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CandidateId = table.Column<int>(nullable: true),
+                    CandidateID = table.Column<int>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(maxLength: 50, nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
+                    PartyID = table.Column<int>(nullable: false),
                     Pesel = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.UserID);
                     table.ForeignKey(
-                        name: "FK_Users_Candidates_CandidateId",
-                        column: x => x.CandidateId,
+                        name: "FK_Users_Candidates_CandidateID",
+                        column: x => x.CandidateID,
                         principalTable: "Candidates",
-                        principalColumn: "CandidateId",
+                        principalColumn: "CandidateID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Users_Parties_PartyID",
+                        column: x => x.PartyID,
+                        principalTable: "Parties",
+                        principalColumn: "PartyID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Candidates_PartyId",
+                name: "IX_Candidates_PartyID",
                 table: "Candidates",
-                column: "PartyId");
+                column: "PartyID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_CandidateId",
+                name: "IX_Users_CandidateID",
                 table: "Users",
-                column: "CandidateId");
+                column: "CandidateID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_PartyID",
+                table: "Users",
+                column: "PartyID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
