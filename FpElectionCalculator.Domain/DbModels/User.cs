@@ -16,11 +16,13 @@ namespace FpElectionCalculator.Domain.DbModels
         private string _pesel;
         public string Pesel
         {
-            get => StringCipher.Decrypt(_pesel, "s@r89fSDn30S@$(");
-            set => _pesel = StringCipher.Encrypt(value, "s@r89fSDn30S@$(");
+            //get => StringCipher.Decrypt(_pesel, "s@r89fSDn30S@$(");
+            //set => _pesel = StringCipher.Encrypt(value, "s@r89fSDn30S@$(");
+            get => _pesel;
+            set => _pesel = value;
         }
 
-        public int CandidateId { get; set; }
+        public int? CandidateId { get; set; }
         public Candidate Candidate { get; set; }
         //public int PartyId { get; set; }
         //public Party Party { get; set; }

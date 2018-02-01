@@ -48,7 +48,7 @@ namespace FpElectionCalculator.Domain.Migrations
                 {
                     UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CandidateId = table.Column<int>(nullable: false),
+                    CandidateId = table.Column<int>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(maxLength: 50, nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
@@ -62,7 +62,7 @@ namespace FpElectionCalculator.Domain.Migrations
                         column: x => x.CandidateId,
                         principalTable: "Candidates",
                         principalColumn: "CandidateId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

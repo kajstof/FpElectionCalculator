@@ -11,7 +11,7 @@ using System;
 namespace FpElectionCalculator.Domain.Migrations
 {
     [DbContext(typeof(ElectionDbContext))]
-    [Migration("20180201013832_CreateElectionDb")]
+    [Migration("20180201021143_CreateElectionDb")]
     partial class CreateElectionDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace FpElectionCalculator.Domain.Migrations
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CandidateId");
+                    b.Property<int?>("CandidateId");
 
                     b.Property<string>("Comment");
 
@@ -86,8 +86,7 @@ namespace FpElectionCalculator.Domain.Migrations
                 {
                     b.HasOne("FpElectionCalculator.Domain.DbModels.Candidate", "Candidate")
                         .WithMany()
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CandidateId");
                 });
 #pragma warning restore 612, 618
         }

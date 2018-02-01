@@ -16,7 +16,8 @@ namespace FpElectionCalculator.Domain
                 Party par = new Party() { Name = "Różowi" };
                 context.Add<Party>(par);
                 context.Add<Party>(new Party() { Name = "Fioletowi" });
-                context.Add<Candidate>(new Candidate() { Name = "Kazimierz XI", Party = par, });
+                //context.Add<Candidate>(new Candidate() { Name = "Kazimierz XI", Party = par, PartyId = par.PartyId });
+                context.SaveChanges();
             }
             //GetCandidatesListFromDb();
         }
