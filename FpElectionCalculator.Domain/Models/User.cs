@@ -9,7 +9,7 @@ namespace FpElectionCalculator.Domain.Models
         public string FirstName { get; }
         public string LastName { get; }
         public Pesel Pesel { get; }
-        public bool Voted { get; }
+        public bool HaveVoted { get; }
         public Vote Vote { get; }
         public string Comment { get; }
 
