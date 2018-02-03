@@ -1,7 +1,7 @@
 ﻿using FpElectionCalculator.Domain.JsonModels;
 using Newtonsoft.Json.Linq;
 
-namespace FpElectionCalculator.Domain
+namespace FpElectionCalculator.Domain.Services
 {
     public class WebserviceDataParser
     {

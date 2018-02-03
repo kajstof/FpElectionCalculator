@@ -3,11 +3,10 @@
 namespace FpElectionCalculator.Domain.Models
 {
     // -----------------------------------------------------------------
-    // Class written by Tomasz Lubinski, originally written in Java
-    // http://www.algorytm.org/numery-identyfikacyjne/pesel/pesel-j.html
-    // This class is slightly modified and ported to C#
+    // This class is modified and ported from Java to C#
     // -----------------------------------------------------------------
-    // PS. http://www.bogus.ovh.org/generatory/all.html - is not working
+    // Class originally written by Tomasz Lubinski
+    // http://www.algorytm.org/numery-identyfikacyjne/pesel/pesel-j.html
     // -----------------------------------------------------------------
     public class Pesel
     {

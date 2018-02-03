@@ -1,8 +1,8 @@
-﻿using FpElectionCalculator.Domain;
-using FpElectionCalculator.Domain.JsonModels;
+﻿using FpElectionCalculator.Domain.JsonModels;
+using FpElectionCalculator.Domain.Services;
 using Xunit;
 
-namespace FpElectionCalculator.Tests
+namespace FpElectionCalculator.Domain.Tests
 {
     public class WebserviceDataParserDisallowedTests
     {

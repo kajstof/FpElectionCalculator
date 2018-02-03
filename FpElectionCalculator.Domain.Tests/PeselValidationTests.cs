@@ -1,7 +1,7 @@
 ﻿using FpElectionCalculator.Domain.Models;
 using Xunit;
 
-namespace FpElectionCalculator.Tests
+namespace FpElectionCalculator.Domain.Tests
 {
     public class PeselValidationTests
     {

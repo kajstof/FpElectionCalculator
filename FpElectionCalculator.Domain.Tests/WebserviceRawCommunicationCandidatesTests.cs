@@ -1,21 +1,21 @@
-﻿using FpElectionCalculator.Domain;
+﻿using FpElectionCalculator.Domain.Services;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace FpElectionCalculator.Tests
+namespace FpElectionCalculator.Domain.Tests
 {
-    public class WebserviceRawCommunicationDisallowedTests
+    public class WebserviceRawCommunicationCandidatesTests
     {
         private readonly ITestOutputHelper output;
 
-        public WebserviceRawCommunicationDisallowedTests(ITestOutputHelper output)
+        public WebserviceRawCommunicationCandidatesTests(ITestOutputHelper output)
         {
             this.output = output;
         }
 
         private string Execute(bool xml = false)
         {
-            return new WebserviceRawCommunication(xml).GetPeopleDisallowedToVote();
+            return new WebserviceRawCommunication(xml).GetCandidates();
         }
 
         [Fact]

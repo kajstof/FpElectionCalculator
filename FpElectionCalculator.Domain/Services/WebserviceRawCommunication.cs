@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 
-namespace FpElectionCalculator.Domain
+namespace FpElectionCalculator.Domain.Services
 {
     public class WebserviceRawCommunication
     {

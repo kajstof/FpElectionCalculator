@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FpElectionCalculator.Tests", "FpElectionCalculator.Tests\FpElectionCalculator.Tests.csproj", "{7B516359-C715-437F-817B-3501B9FC41FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FpElectionCalculator.Domain.Tests", "FpElectionCalculator.Domain.Tests\FpElectionCalculator.Domain.Tests.csproj", "{7B516359-C715-437F-817B-3501B9FC41FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FpElectionCalculator.CLI", "FpElectionCalculator.CLI\FpElectionCalculator.CLI.csproj", "{34B2BF63-0FA7-4902-888C-AF257E2CA106}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FpElectionCalculator.Domain", "FpElectionCalculator.Domain\FpElectionCalculator.Domain.csproj", "{018E61B4-4A18-4332-B337-0AD3F7363493}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FpElectionCalculator.WPF", "FpElectionCalculator.WPF\FpElectionCalculator.WPF.csproj", "{194EECA0-B9A9-4A5E-AC87-D446AABA5056}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56A518D1-8BD3-45E7-B8F1-A4DCA5A47680}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

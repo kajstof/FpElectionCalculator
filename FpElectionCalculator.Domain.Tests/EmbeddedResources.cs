@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace FpElectionCalculator.Tests
+namespace FpElectionCalculator.Domain.Tests
 {
     public class EmbeddedResources
     {

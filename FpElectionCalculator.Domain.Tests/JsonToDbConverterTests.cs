@@ -1,10 +1,10 @@
-﻿using FpElectionCalculator.Domain;
-using FpElectionCalculator.Domain.DbModels;
+﻿using FpElectionCalculator.Domain.DbModels;
 using FpElectionCalculator.Domain.JsonModels;
+using FpElectionCalculator.Domain.Services;
 using System.Collections.Generic;
 using Xunit;
 
-namespace FpElectionCalculator.Tests
+namespace FpElectionCalculator.Domain.Tests
 {
     public class JsonToDbConverterTests
     {
