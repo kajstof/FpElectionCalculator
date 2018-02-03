@@ -63,9 +63,11 @@ Remove-Migration -Verbose -Project FpElectionCalculator.Domain -Context Election
     Password: FPElectionCalculator1
 ```
 Connection string Azure MSSQL:
+
 `@"Server=tcp:fp-electioncalculator-db.database.windows.net,1433;Initial Catalog=fp-electioncalculator-db;Persist Security Info=False;User ID=ksf;Password=FPElectionCalculator1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"`
 
 Connection string LocalDB:
+
 `@"Server=(localdb)\MSSQLLocalDB;Database=fp-electioncalculator-db;Trusted_Connection=True;MultipleActiveResultSets=true"`
 
 ### SQL Scripts
