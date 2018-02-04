@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FpElectionCalculator.Domain.Services
 {
-    internal static class WebserviceConnector
+    internal static class WebserviceLogic
     {
         internal static bool IsPeselDisallowedToVote(string pesel)
         {

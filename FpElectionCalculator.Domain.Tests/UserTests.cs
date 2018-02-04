@@ -13,7 +13,7 @@ namespace FpElectionCalculator.Domain.Tests
 
         private static LoginValidator Execute(string firstName, string lastName, string pesel)
         {
-            User user = new User(firstName, lastName, pesel);
+            User user = new User(new LoginCredentials(firstName, lastName, pesel));
             LoginValidator loginValidator = user.Login();
             return loginValidator;
         }

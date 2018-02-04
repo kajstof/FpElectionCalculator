@@ -11,7 +11,7 @@ namespace FpElectionCalculator.Domain.Tests
         private IList<Party> Execute(string json)
         {
             CandidatesList candidatesList = WebserviceDataParser.GetCandidatesList(json);
-            return JsonModelToDbModelConverter.ConvertPartiesAndCandidatesFromJsonModelToDbModel(candidatesList);
+            return DatabaseAndWebserviceLogic.ConvertPartiesAndCandidatesFromJsonModelToDbModel(candidatesList);
         }
 
         [Fact]

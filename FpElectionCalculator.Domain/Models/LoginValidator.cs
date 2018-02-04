@@ -19,7 +19,7 @@ namespace FpElectionCalculator.Domain.Models
             _firstName = firstName;
             _lastName = lastName;
             _pesel = pesel;
-            Error = Validate();
+            Error = !Validate();
         }
         
         private bool Validate()
@@ -36,10 +36,10 @@ namespace FpElectionCalculator.Domain.Models
             if (_lastName.Length < 2)
                 LoginErrors.Add(LoginError.UserLastNameIsTooShort);
 
-            if (WebserviceConnector.IsPeselDisallowedToVote(_pesel.ToString()))
+            if (WebserviceLogic.IsPeselDisallowedToVote(_pesel.ToString()))
                 LoginErrors.Add(LoginError.UserIsDisallowedToVote);
 
-            if (DatabaseConnector.IsUserVoted(_firstName, _lastName, _pesel.ToString()))
+            if (DatabaseLogic.IsUserVoted(new LoginCredentials(_firstName, _lastName, _pesel.ToString())))
                 LoginErrors.Add(LoginError.UserAlreadyVoted);
 
             return LoginErrors.Count == 0;

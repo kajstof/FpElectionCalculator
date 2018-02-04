@@ -69,7 +69,7 @@ namespace FpElectionCalculator.Domain.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Vote", b =>
+            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.DoVote", b =>
                 {
                     b.Property<int>("VoteID")
                         .ValueGeneratedOnAdd();
@@ -95,7 +95,7 @@ namespace FpElectionCalculator.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.Vote", b =>
+            modelBuilder.Entity("FpElectionCalculator.Domain.DbModels.DoVote", b =>
                 {
                     b.HasOne("FpElectionCalculator.Domain.DbModels.Candidate", "Candidate")
                         .WithMany("Votes")

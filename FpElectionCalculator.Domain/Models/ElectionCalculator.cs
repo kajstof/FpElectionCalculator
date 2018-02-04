@@ -9,14 +9,15 @@ namespace FpElectionCalculator.Domain.Models
     {
         public static void Run()
         {
-            using (var context = new ElectionDbContext())
-            {
-                context.Database.EnsureDeleted();
-            }
+            //using (var context = new ElectionDbContext())
+            //{
+            //    context.Database.EnsureDeleted();
+            //}
 
-            FirstRunDatabaseInitializer.InitializeDbWithCandidatesAndParties();
+            DatabaseAndWebserviceLogic.InitializeDbWithCandidatesAndParties();
         }
-        
+
+        public static IEnumerable<Candidate> GetCandidates() => DatabaseLogic.GetCandidates();
         private static void GeneratePdfFile() => throw new NotImplementedException();
         private static void GenerateCsvFile() => throw new NotImplementedException();
         private static void GenerateActualReport() => throw new NotImplementedException();
