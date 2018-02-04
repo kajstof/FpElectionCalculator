@@ -113,22 +113,22 @@ namespace FpElectionCalculator.Domain.Models
             return GetBirthdayDate().AddYears(18) <= DateTime.Now;
         }
 
-        public String GetSex()
+        public Gender GetGender()
         {
             if (_valid)
             {
                 if (_peselByte[9] % 2 == 1)
                 {
-                    return "Male";
+                    return Gender.Male;
                 }
                 else
                 {
-                    return "Female";
+                    return Gender.Female;
                 }
             }
             else
             {
-                return "---";
+                return Gender.Unkown;
             }
         }
 
