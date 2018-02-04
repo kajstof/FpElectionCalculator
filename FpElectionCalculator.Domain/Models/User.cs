@@ -11,6 +11,7 @@ namespace FpElectionCalculator.Domain.Models
         {
             FirstName = firstName;
             LastName = lastName;
+            base.Pesel = pesel;
             Pesel = new Pesel(pesel);
         }
 

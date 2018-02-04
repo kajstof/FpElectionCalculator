@@ -6,16 +6,9 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class WebserviceDataParserDisallowedTests
     {
-        private readonly WebserviceDataParser _parser;
-
-        public WebserviceDataParserDisallowedTests()
-        {
-            _parser = new WebserviceDataParser();
-        }
-
         private DisallowedList Execute(string json)
         {
-            return _parser.GetDisallowedPeopleList(json);
+            return WebserviceDataParser.GetDisallowedPeopleList(json);
         }
 
         [Fact]

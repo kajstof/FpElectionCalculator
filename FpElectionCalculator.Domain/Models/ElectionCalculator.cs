@@ -3,7 +3,7 @@ using FpElectionCalculator.Domain.Services;
 using System;
 using System.Collections.Generic;
 
-namespace FpElectionCalculator.Domain
+namespace FpElectionCalculator.Domain.Models
 {
     public static class ElectionCalculator
     {

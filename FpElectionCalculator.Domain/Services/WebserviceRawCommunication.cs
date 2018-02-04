@@ -2,34 +2,27 @@
 
 namespace FpElectionCalculator.Domain.Services
 {
-    public class WebserviceRawCommunication
+    public static class WebserviceRawCommunication
     {
-        private readonly bool _xml;
-
-        public WebserviceRawCommunication(bool xml = false)
-        {
-            _xml = xml;
-        }
-
-        private string GetHttp(string queryString)
+        private static string GetHttp(string queryString, bool useXml)
         {
             string url = $"http://webtask.future-processing.com:8069/{queryString}";
             var httpClient = new HttpClient();
-            if (_xml)
+            if (useXml)
             {
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/xml");
             }
             return httpClient.GetAsync(url).Result.Content.ReadAsStringAsync().Result;
         }
 
-        public string GetCandidates()
+        public static string GetCandidates(bool useXml = false)
         {
-            return GetHttp("candidates");
+            return GetHttp("candidates", useXml);
         }
 
-        public string GetPeopleDisallowedToVote()
+        public static string GetPeopleDisallowedToVote(bool useXml = false)
         {
-            return GetHttp("blocked");
+            return GetHttp("blocked", useXml);
         }
     }
 }
