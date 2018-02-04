@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20180201183513_CreateElectionDb.cs" />
     <Compile Remove="Migrations\20180201190401_CreateElectionDb.cs" />
     <Compile Remove="Migrations\20180201190600_CreateElectionDb.cs" />
+    <Compile Remove="Migrations\20180201190934_CreateElectionDb.cs" />
+    <Compile Remove="Models\LoginCredentials.cs" />
   </ItemGroup>
 
   <ItemGroup>

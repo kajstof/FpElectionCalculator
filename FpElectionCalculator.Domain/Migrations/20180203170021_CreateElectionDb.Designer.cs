@@ -11,7 +11,7 @@ using System;
 namespace FpElectionCalculator.Domain.Migrations
 {
     [DbContext(typeof(ElectionDbContext))]
-    [Migration("20180201190934_CreateElectionDb")]
+    [Migration("20180203170021_CreateElectionDb")]
     partial class CreateElectionDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

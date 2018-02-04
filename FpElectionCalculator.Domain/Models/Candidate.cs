@@ -1,7 +1,6 @@
 ﻿namespace FpElectionCalculator.Domain.Models
 {
-    public class Candidate
+    public class Candidate : DbModels.Candidate
     {
-        public string Name { get; set; }
     }
 }

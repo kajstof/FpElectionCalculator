@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FpElectionCalculator.Domain.Models
 {
-    public class User
+    public class User : DbModels.User
     {
-        public string FirstName { get; }
-        public string LastName { get; }
-        public Pesel Pesel { get; }
+        public new Pesel Pesel { get; }
         public bool HaveVoted { get; }
         public Vote Vote { get; }
-        public string Comment { get; }
 
-        public User(string firstName, string lastName, string peselString)
+        public User(string firstName, string lastName, string pesel)
         {
             FirstName = firstName;
             LastName = lastName;
-            Pesel = new Pesel(peselString);
+            Pesel = new Pesel(pesel);
         }
 
-        public bool Login() => throw new NotImplementedException();
+        public LoginValidator Login()
+        {
+            LoginValidator loginValidator = new LoginValidator(FirstName, LastName, Pesel);
+            return loginValidator;
+        }
+
         public bool Logout() => throw new NotImplementedException();
-        public bool DoVote(Candidate candidate, Party party) => throw new NotImplementedException();
+        public bool DoVote(ICollection<Candidate> candidateList) => throw new NotImplementedException();
         public bool IsOnBlacklist() => throw new NotImplementedException();
         public bool IsEighteen() => throw new NotImplementedException();
     }

@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace FpElectionCalculator.Domain.Models
+﻿namespace FpElectionCalculator.Domain.Models
 {
-    public class Party
+    public class Party : DbModels.Party
     {
-        public string Name { get; set; }
-        public IList<Candidate> Candidates { get; set; }
     }
 }

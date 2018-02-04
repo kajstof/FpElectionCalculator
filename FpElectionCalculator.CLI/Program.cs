@@ -8,10 +8,6 @@ namespace FpElectionCalculator.CLI
     {
         static void Main(string[] args)
         {
-            //string firstName = "Krzysztof";
-            //string lastName = "Krysiak";
-            //string pesel = "86030218897";
-            ElectionCalculator el = new ElectionCalculator();
             ElectionCalculator.Run();
         }
     }

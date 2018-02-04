@@ -131,7 +131,6 @@ VALUES (N'20180201013832_CreateElectionDb', N'2.0.1-rtm-125');
 GO
 ```
 
-
 #### Drop tables
 
 ```sql

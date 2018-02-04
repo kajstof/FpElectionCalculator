@@ -108,6 +108,15 @@ namespace FpElectionCalculator.Domain.Models
             return day;
         }
 
+        public DateTime GetBirthdayDate() => new DateTime(GetBirthYear(), GetBirthMonth(), GetBirthDay());
+        public bool IsEighteen()
+        {
+            DateTime d = GetBirthdayDate();
+            DateTime e = d.AddYears(18);
+            DateTime f = DateTime.Now;
+            return e <= f;
+        }
+
         public String GetSex()
         {
             if (valid)
