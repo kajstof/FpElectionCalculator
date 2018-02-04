@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 
 namespace FpElectionCalculator.Domain.Models
 {
-    public partial class LoginValidator
+    public class LoginValidator
     {
-        private string _firstName;
-        private string _lastName;
-        private Pesel _pesel;
+        private readonly string _firstName;
+        private readonly string _lastName;
+        private readonly Pesel _pesel;
 
         public bool Error { get; }
 

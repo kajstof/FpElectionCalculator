@@ -1,23 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace FpElectionCalculator.Domain.Services
 {
     public class WebserviceRawCommunication
     {
-        private bool xml;
+        private readonly bool _xml;
 
         public WebserviceRawCommunication(bool xml = false)
         {
-            this.xml = xml;
+            _xml = xml;
         }
 
         private string GetHttp(string queryString)
         {
             string url = $"http://webtask.future-processing.com:8069/{queryString}";
             var httpClient = new HttpClient();
-            if (xml)
+            if (_xml)
             {
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/xml");
             }

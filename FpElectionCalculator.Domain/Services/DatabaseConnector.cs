@@ -1,5 +1,4 @@
 ﻿using FpElectionCalculator.Domain.DbModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,9 +11,11 @@ namespace FpElectionCalculator.Domain.Services
             using (var context = new ElectionDbContext())
             {
                 bool databaseNotExists = context.Database.EnsureCreated();
-                if (databaseNotExists || (!databaseNotExists && context.Candidates.ToList().Count() == 0))
+                if (!databaseNotExists && context.Candidates.ToList().Any())
+                {
                     context.AddRange(partiesDb);
                 context.SaveChanges();
+                }
             }
         }
 
@@ -24,10 +25,10 @@ namespace FpElectionCalculator.Domain.Services
             using (var context = new ElectionDbContext())
             {
                 // Find user in database
-                Func<User, bool> func = u => u.FirstName.Equals(firstName) && u.LastName.Equals(lastName) && u.Pesel.Equals(pesel);
-                bool userExists = context.Users.Any(func);
+                bool UserFunc(User u) => u.FirstName.Equals(firstName) && u.LastName.Equals(lastName) && u.Pesel.Equals(pesel);
+                bool userExists = context.Users.Any(UserFunc);
                 if (userExists)
-                    voted = context.Users.First(func).Votes.Count() > 0;
+                    voted = context.Users.First(UserFunc).Votes.Any();
             }
 
             return voted;

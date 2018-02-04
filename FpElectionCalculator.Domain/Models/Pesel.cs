@@ -2,56 +2,54 @@
 
 namespace FpElectionCalculator.Domain.Models
 {
-    // -----------------------------------------------------------------
+    // -------------------------------------------------------------------
     // This class is modified and ported from Java to C#
-    // -----------------------------------------------------------------
+    // -------------------------------------------------------------------
     // Class originally written by Tomasz Lubinski
     // http://www.algorytm.org/numery-identyfikacyjne/pesel/pesel-j.html
-    // -----------------------------------------------------------------
+    // -------------------------------------------------------------------
     public class Pesel
     {
-        private byte[] peselByte = new byte[11];
-        private string peselString;
-        private bool valid = false;
+        private readonly byte[] _peselByte = new byte[11];
+        private readonly string _peselString;
+        private readonly bool _valid;
 
         public Pesel(string pesel)
         {
-            peselString = pesel;
+            _peselString = pesel;
             if (pesel.Length != 11)
             {
-                valid = false;
+                _valid = false;
             }
             else
             {
                 for (int i = 0; i < 11; i++)
                 {
-                    peselByte[i] = byte.Parse(pesel[i].ToString());
+                    _peselByte[i] = byte.Parse(pesel[i].ToString());
                 }
 
                 if (CheckMonth() && CheckDay() && CheckSum())
                 {
-                    valid = true;
+                    _valid = true;
                 }
                 else
                 {
-                    valid = false;
+                    _valid = false;
                 }
             }
         }
 
         public bool IsValid()
         {
-            return valid;
+            return _valid;
         }
 
         public int GetBirthYear()
         {
-            int year;
-            int month;
-            year = 10 * peselByte[0];
-            year += peselByte[1];
-            month = 10 * peselByte[2];
-            month += peselByte[3];
+            int year = 10 * _peselByte[0];
+            year += _peselByte[1];
+            int month = 10 * _peselByte[2];
+            month += _peselByte[3];
             if (month > 80 && month < 93)
             {
                 year += 1800;
@@ -72,14 +70,14 @@ namespace FpElectionCalculator.Domain.Models
             {
                 year += 2200;
             }
+
             return year;
         }
 
         public int GetBirthMonth()
         {
-            int month;
-            month = 10 * peselByte[2];
-            month += peselByte[3];
+            int month = 10 * _peselByte[2];
+            month += _peselByte[3];
             if (month > 80 && month < 93)
             {
                 month -= 80;
@@ -96,32 +94,33 @@ namespace FpElectionCalculator.Domain.Models
             {
                 month -= 60;
             }
+
             return month;
         }
 
 
         public int GetBirthDay()
         {
-            int day;
-            day = 10 * peselByte[4];
-            day += peselByte[5];
+            int day = 10 * _peselByte[4];
+            day += _peselByte[5];
             return day;
         }
 
         public DateTime GetBirthdayDate() => new DateTime(GetBirthYear(), GetBirthMonth(), GetBirthDay());
+
         public bool IsEighteen()
         {
-            DateTime d = GetBirthdayDate();
-            DateTime e = d.AddYears(18);
-            DateTime f = DateTime.Now;
-            return e <= f;
+            DateTime a = GetBirthdayDate();
+            DateTime b = a.AddYears(18);
+            DateTime c = DateTime.Now;
+            return b <= c;
         }
 
         public String GetSex()
         {
-            if (valid)
+            if (_valid)
             {
-                if (peselByte[9] % 2 == 1)
+                if (_peselByte[9] % 2 == 1)
                 {
                     return "Male";
                 }
@@ -138,21 +137,21 @@ namespace FpElectionCalculator.Domain.Models
 
         private bool CheckSum()
         {
-            int sum = 1 * peselByte[0] +
-            3 * peselByte[1] +
-            7 * peselByte[2] +
-            9 * peselByte[3] +
-            1 * peselByte[4] +
-            3 * peselByte[5] +
-            7 * peselByte[6] +
-            9 * peselByte[7] +
-            1 * peselByte[8] +
-            3 * peselByte[9];
+            int sum = 1 * _peselByte[0] +
+                      3 * _peselByte[1] +
+                      7 * _peselByte[2] +
+                      9 * _peselByte[3] +
+                      1 * _peselByte[4] +
+                      3 * _peselByte[5] +
+                      7 * _peselByte[6] +
+                      9 * _peselByte[7] +
+                      1 * _peselByte[8] +
+                      3 * _peselByte[9];
             sum %= 10;
             sum = 10 - sum;
             sum %= 10;
 
-            if (sum == peselByte[10])
+            if (sum == _peselByte[10])
             {
                 return true;
             }
@@ -165,7 +164,6 @@ namespace FpElectionCalculator.Domain.Models
         private bool CheckMonth()
         {
             int month = GetBirthMonth();
-            int day = GetBirthDay();
             if (month > 0 && month < 13)
             {
                 return true;
@@ -182,20 +180,20 @@ namespace FpElectionCalculator.Domain.Models
             int month = GetBirthMonth();
             int day = GetBirthDay();
             if ((day > 0 && day < 32) &&
-            (month == 1 || month == 3 || month == 5 ||
-            month == 7 || month == 8 || month == 10 ||
-            month == 12))
+                (month == 1 || month == 3 || month == 5 ||
+                 month == 7 || month == 8 || month == 10 ||
+                 month == 12))
             {
                 return true;
             }
             else if ((day > 0 && day < 31) &&
-            (month == 4 || month == 6 || month == 9 ||
-            month == 11))
+                     (month == 4 || month == 6 || month == 9 ||
+                      month == 11))
             {
                 return true;
             }
             else if ((day > 0 && day < 30 && LeapYear(year)) ||
-            (day > 0 && day < 29 && !LeapYear(year)))
+                     (day > 0 && day < 29 && !LeapYear(year)))
             {
                 return true;
             }
@@ -215,7 +213,7 @@ namespace FpElectionCalculator.Domain.Models
 
         public override string ToString()
         {
-            return peselString;
+            return _peselString;
         }
     }
 }

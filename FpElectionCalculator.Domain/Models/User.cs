@@ -6,8 +6,6 @@ namespace FpElectionCalculator.Domain.Models
     public class User : DbModels.User
     {
         public new Pesel Pesel { get; }
-        public bool HaveVoted { get; }
-        public Vote Vote { get; }
 
         public User(string firstName, string lastName, string pesel)
         {
@@ -23,7 +21,7 @@ namespace FpElectionCalculator.Domain.Models
         }
 
         public bool Logout() => throw new NotImplementedException();
-        public bool DoVote(ICollection<Candidate> candidateList) => throw new NotImplementedException();
+        public bool DoVote(IEnumerable<Candidate> candidateList) => throw new NotImplementedException();
         public bool IsOnBlacklist() => throw new NotImplementedException();
         public bool IsEighteen() => throw new NotImplementedException();
     }

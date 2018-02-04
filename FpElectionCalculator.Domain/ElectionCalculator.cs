@@ -17,7 +17,7 @@ namespace FpElectionCalculator.Domain
 
             FirstRunDatabaseInitializer.InitializeDbWithCandidatesAndParties();
         }
-
+        
         private static void GetCandidatesListFromWebservice() => throw new NotImplementedException();
         private static void PutCandidatesListToDb() => throw new NotImplementedException();
         private static void GetCandidatesListFromDb() => throw new NotImplementedException();

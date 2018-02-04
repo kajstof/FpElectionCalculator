@@ -6,7 +6,7 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class WebserviceDataParserDisallowedTests
     {
-        private WebserviceDataParser _parser;
+        private readonly WebserviceDataParser _parser;
 
         public WebserviceDataParserDisallowedTests()
         {

@@ -7,10 +7,10 @@ namespace FpElectionCalculator.Domain.DbModels
     [Table("Candidates")]
     public class Candidate
     {
-        public int CandidateID { get; set; }
+        public int CandidateId { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
-        public int PartyID { get; set; }
+        public int PartyId { get; set; }
         public Party Party { get; set; }
 
         public ICollection<Vote> Votes { get; set; }

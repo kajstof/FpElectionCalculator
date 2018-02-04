@@ -8,7 +8,7 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class JsonToDbConverterTests
     {
-        private WebserviceDataParser _parser;
+        private readonly WebserviceDataParser _parser;
 
         public JsonToDbConverterTests()
         {

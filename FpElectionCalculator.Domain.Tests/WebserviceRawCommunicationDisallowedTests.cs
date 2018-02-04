@@ -6,11 +6,11 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class WebserviceRawCommunicationDisallowedTests
     {
-        private readonly ITestOutputHelper output;
+        private readonly ITestOutputHelper _output;
 
         public WebserviceRawCommunicationDisallowedTests(ITestOutputHelper output)
         {
-            this.output = output;
+            _output = output;
         }
 
         private string Execute(bool xml = false)
@@ -22,7 +22,7 @@ namespace FpElectionCalculator.Domain.Tests
         public void ReturnJsonResponse()
         {
             string results = Execute();
-            output.WriteLine($"Return response:\n{results}");
+            _output.WriteLine($"Return response:\n{results}");
             Assert.NotEmpty(results);
         }
 
@@ -30,8 +30,8 @@ namespace FpElectionCalculator.Domain.Tests
         public void ReturnXmlResponse()
         {
             string results = Execute(true);
-            output.WriteLine($"Return response:\n{results}");
-            Assert.NotEmpty(results); ;
+            _output.WriteLine($"Return response:\n{results}");
+            Assert.NotEmpty(results);
         }
     }
 }

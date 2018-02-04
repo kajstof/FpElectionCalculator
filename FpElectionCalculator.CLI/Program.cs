@@ -1,6 +1,4 @@
 ﻿using FpElectionCalculator.Domain;
-using FpElectionCalculator.Domain.Models;
-using System;
 
 namespace FpElectionCalculator.CLI
 {

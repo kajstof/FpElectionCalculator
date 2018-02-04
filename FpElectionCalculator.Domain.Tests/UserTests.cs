@@ -5,6 +5,12 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class UserLoginTests
     {
+        // Attention!
+        // Data used for these tests are depend from other sources (like webservice or database)
+        // If eg.:
+        // - pesel will shown on black list then tests can be failed!
+        // - Some user did invalid vote (0 or 2, 3, ... candidates)
+
         private static LoginValidator Execute(string firstName, string lastName, string pesel)
         {
             User user = new User(firstName, lastName, pesel);
