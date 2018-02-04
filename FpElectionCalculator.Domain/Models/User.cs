@@ -5,7 +5,7 @@ namespace FpElectionCalculator.Domain.Models
 {
     public class User : DbModels.User
     {
-        public new Pesel Pesel { get; }
+        private new Pesel Pesel { get; }
 
         public User(string firstName, string lastName, string pesel)
         {

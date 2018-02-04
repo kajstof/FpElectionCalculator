@@ -1,12 +1,13 @@
 ﻿using FpElectionCalculator.Domain.DbModels;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace FpElectionCalculator.Domain.Services
 {
-    public static class DatabaseConnector
+    internal static class DatabaseConnector
     {
-        internal static void InitializeDbWithCandidatesAndParties(IList<Party> partiesDb)
+        internal static void InitializeDbWithCandidatesAndParties(IEnumerable<Party> partiesDb)
         {
             using (var context = new ElectionDbContext())
             {
@@ -14,7 +15,7 @@ namespace FpElectionCalculator.Domain.Services
                 if (!databaseNotExists && context.Candidates.ToList().Any())
                 {
                     context.AddRange(partiesDb);
-                context.SaveChanges();
+                    context.SaveChanges();
                 }
             }
         }
@@ -25,7 +26,9 @@ namespace FpElectionCalculator.Domain.Services
             using (var context = new ElectionDbContext())
             {
                 // Find user in database
-                bool UserFunc(User u) => u.FirstName.Equals(firstName) && u.LastName.Equals(lastName) && u.Pesel.Equals(pesel);
+                bool UserFunc(User u) =>
+                    u.FirstName.Equals(firstName) && u.LastName.Equals(lastName) && u.Pesel.Equals(pesel);
+
                 bool userExists = context.Users.Any(UserFunc);
                 if (userExists)
                     voted = context.Users.First(UserFunc).Votes.Any();
@@ -33,5 +36,13 @@ namespace FpElectionCalculator.Domain.Services
 
             return voted;
         }
+
+//        internal static IEnumerable<Candidate> GetCandidates()
+//        {
+//            IEnumerable<Candidate> candidateList = new Collection<Candidate>();
+//            using (var context = new ElectionDbContext())
+//            {
+//            }
+//        }
     }
 }

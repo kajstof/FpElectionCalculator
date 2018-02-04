@@ -21,7 +21,7 @@ namespace FpElectionCalculator.Domain.Models
             _pesel = pesel;
             Error = Validate();
         }
-
+        
         private bool Validate()
         {
             if (!_pesel.IsValid())

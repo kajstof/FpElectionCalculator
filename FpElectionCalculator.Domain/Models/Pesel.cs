@@ -110,10 +110,7 @@ namespace FpElectionCalculator.Domain.Models
 
         public bool IsEighteen()
         {
-            DateTime a = GetBirthdayDate();
-            DateTime b = a.AddYears(18);
-            DateTime c = DateTime.Now;
-            return b <= c;
+            return GetBirthdayDate().AddYears(18) <= DateTime.Now;
         }
 
         public String GetSex()

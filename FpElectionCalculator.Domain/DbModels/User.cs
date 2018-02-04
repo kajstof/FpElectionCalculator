@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FpElectionCalculator.Domain.Services;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,13 +15,12 @@ namespace FpElectionCalculator.Domain.DbModels
         public string LastName { get; set; }
         public string Comment { get; set; }
 
+        private string _hash = "FuTur3pr0C3$s!nG#";
         private string _pesel;
         public string Pesel
         {
-            //get => StringCipher.Decrypt(_pesel, "s@r89fSDn30S@$(");
-            //set => _pesel = StringCipher.Encrypt(value, "s@r89fSDn30S@$(");
-            get => _pesel;
-            set => _pesel = value;
+            get => StringCipher.Decrypt(_pesel, _hash);
+            set => _pesel = StringCipher.Encrypt(value, _hash);
         }
 
         //public int? CandidateID { get; set; }
