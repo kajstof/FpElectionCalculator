@@ -19,7 +19,7 @@ namespace FpElectionCalculator.Domain.Tests
         [Theory]
         [InlineData("fdsajkfFUISFhAS*fsd8f9FY*(HWEUrfweF&SEbjsdfSSE&*F")]
         [InlineData("gdnS*SD(FENekwr8(SDFYS*(Fyweew7F^&GSEF^&^SEfgsef&")]
-        public void ReturnsDecryptetString(string text)
+        public void ReturnsDecryptedString(string text)
         {
             string decryptedText = StringCipher.Encrypt(text, _hash);
             Assert.NotEqual(decryptedText, text);
