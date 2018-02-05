@@ -13,7 +13,7 @@ namespace FpElectionCalculator.Domain.Tests
             _parser = new WebserviceDataParser();
         }
 
-        private CandidatesList Execute(string json)
+        private CandidateList Execute(string json)
         {
             return _parser.GetCandidatesList(json);
         }
@@ -21,7 +21,7 @@ namespace FpElectionCalculator.Domain.Tests
         [Fact]
         public void ParsesJsonResponse()
         {
-            var ex = Record.Exception(() => Execute(EmbeddedResources.GetResource("candidates.json")));
+            var ex = Record.Exception(() => Execute(EmbeddedResources.GetResource("dbCandidates.json")));
             Assert.Null(ex);
         }
 

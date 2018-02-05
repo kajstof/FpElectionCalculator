@@ -1,4 +1,5 @@
-﻿using FpElectionCalculator.Domain.Models;
+﻿using System;
+using FpElectionCalculator.Domain.Models;
 using Xunit;
 
 namespace FpElectionCalculator.Domain.Tests
@@ -13,9 +14,10 @@ namespace FpElectionCalculator.Domain.Tests
 
         private static LoginValidation Execute(string firstName, string lastName, string pesel)
         {
-            User user = new User(new LoginCredentials(firstName, lastName, pesel));
-            LoginValidation loginValidation = user.Login();
-            return loginValidation;
+//            User user = new User(new LoginCredentials(firstName, lastName, pesel));
+//            LoginValidation loginValidation = user.Login();
+//            return loginValidation;
+            throw NotImplementedException;
         }
 
         [Theory]

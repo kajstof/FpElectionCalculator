@@ -35,7 +35,7 @@ namespace FpElectionCalculator.Domain.Models
         }
 
         public bool Logout() => throw new NotImplementedException();
-        public bool IsPeselDisallowedToVote() => WebserviceLogic.IsPeselDisallowedToVote(Pesel.ToString());
+        public bool IsPeselDisallowedToVote() => WebserviceRepository.IsPeselDisallowedToVote(Pesel.ToString());
 
         public bool IsUserVoted()
         {
@@ -113,7 +113,7 @@ namespace FpElectionCalculator.Domain.Models
                             voted = user.Votes.Any();
 
                             bool isPeselDisallowedToVote =
-                                WebserviceLogic.IsPeselDisallowedToVote(base.Pesel);
+                                WebserviceRepository.IsPeselDisallowedToVote(base.Pesel);
 
                             if (!voted && !isPeselDisallowedToVote)
                             {

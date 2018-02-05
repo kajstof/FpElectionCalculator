@@ -43,7 +43,7 @@ namespace FpElectionCalculator.Domain.Models
 
             if (_serviceUserIsDisallowedToVoteService.IsPeselDisallowedToVote(_pesel.ToString()))
                 LoginWarnings.Add(LoginWarning.UserIsDisallowedToVote);
-//            if (WebserviceLogic.IsPeselDisallowedToVote(_pesel.ToString()))
+//            if (WebserviceRepository.IsPeselDisallowedToVote(_pesel.ToString()))
 
             if (_serviceUserAlreadyVotedService.IsUserVoted(new LoginCredentials(_firstName, _lastName, _pesel.ToString())))
                 LoginWarnings.Add(LoginWarning.UserAlreadyVoted);

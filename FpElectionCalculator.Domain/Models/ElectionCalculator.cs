@@ -20,14 +20,6 @@ namespace FpElectionCalculator.Domain.Models
             {
                 _context.Database.EnsureDeleted();
             }
-
-            new DatabaseAndWebserviceLogic(_context).InitializeDbWithCandidatesAndParties();
-        }
-
-        public IEnumerable<Candidate> GetCandidates()
-        {
-            IGetCandidatesService candidates = new GetCandidatesFromDatabaseService(_context);
-            return candidates.GetCandidates();
         }
 
         private void GeneratePdfFile() => throw new NotImplementedException();

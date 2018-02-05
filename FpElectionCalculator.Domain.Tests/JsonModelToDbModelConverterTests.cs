@@ -1,7 +1,7 @@
-﻿using FpElectionCalculator.Domain.DbModels;
-using FpElectionCalculator.Domain.JsonModels;
+﻿using FpElectionCalculator.Domain.JsonModels;
 using FpElectionCalculator.Domain.Services;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace FpElectionCalculator.Domain.Tests
@@ -15,16 +15,16 @@ namespace FpElectionCalculator.Domain.Tests
             _parser = new WebserviceDataParser();
         }
 
-        private IList<Party> Execute(string json)
+        private IList<DbModels.Party> Execute(string json)
         {
-            CandidatesList candidatesList = _parser.GetCandidatesList(json);
-            return candidatesList.ConvertToDbModel();
+            CandidateList candidatesList = _parser.GetCandidatesList(json);
+            return candidatesList.ConvertToDbModel().ToList();
         }
 
         [Fact]
         public void ReturnsIListPartyObject()
         {
-            IList<Party> parties = Execute(EmbeddedResources.GetResource("candidates.json"));
+            IList<DbModels.Party> parties = Execute(EmbeddedResources.GetResource("dbCandidates.json"));
             Assert.NotEmpty(parties);
             Assert.Equal(4, parties.Count);
             Assert.All(parties, p => Assert.True(p.Name.Length > 0));

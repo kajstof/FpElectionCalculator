@@ -1,19 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
-using FpElectionCalculator.Domain.DbModels;
 
 namespace FpElectionCalculator.Domain.Services
 {
-    public class GetCandidatesFromDatabaseService : IGetCandidatesService
+    public class GetDbCandidatesService : IGetDbCandidatesService
     {
-        private readonly ElectionDbContext _context;
+        private readonly DbModels.ElectionDbContext _context;
 
-        public GetCandidatesFromDatabaseService(ElectionDbContext context)
+        public GetDbCandidatesService(DbModels.ElectionDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Candidate> GetCandidates()
+        public IEnumerable<DbModels.Candidate> GetCandidates()
         {
             using (_context)
             {

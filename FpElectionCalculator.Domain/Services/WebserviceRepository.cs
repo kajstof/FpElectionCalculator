@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace FpElectionCalculator.Domain.Services
 {
-    public class WebserviceLogic
+    public class WebserviceRepository
     {
-        internal static bool IsPeselDisallowedToVote(string pesel)
+        public static bool IsPeselDisallowedToVote(string pesel)
         {
             string json = new WebserviceRawCommunication().GetPeopleDisallowedToVote();
             IList<Person> disallowedPersonList = new WebserviceDataParser().GetDisallowedPeopleList(json).PersonList;
             return disallowedPersonList.Any(p => p.Pesel == pesel);
         }
 
-        internal static CandidatesList GetCandidatesList()
+        public static CandidateList GetCandidatesList()
         {
             return new WebserviceDataParser().GetCandidatesList(new WebserviceRawCommunication().GetCandidates());
         }
