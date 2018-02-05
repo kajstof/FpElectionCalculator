@@ -1,25 +1,37 @@
-﻿using FpElectionCalculator.Domain.DbModels;
-using FpElectionCalculator.Domain.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using FpElectionCalculator.Domain.DbModels;
+using FpElectionCalculator.Domain.Services;
 
 namespace FpElectionCalculator.Domain.Models
 {
-    public static class ElectionCalculator
+    public class ElectionCalculator
     {
-        public static void Run()
-        {
-            //using (var context = new ElectionDbContext())
-            //{
-            //    context.Database.EnsureDeleted();
-            //}
+        private readonly ElectionDbContext _context;
 
-            DatabaseAndWebserviceLogic.InitializeDbWithCandidatesAndParties();
+        public ElectionCalculator(ElectionDbContext context)
+        {
+            _context = context;
         }
 
-        public static IEnumerable<Candidate> GetCandidates() => DatabaseLogic.GetCandidates();
-        private static void GeneratePdfFile() => throw new NotImplementedException();
-        private static void GenerateCsvFile() => throw new NotImplementedException();
-        private static void GenerateActualReport() => throw new NotImplementedException();
+        public void Run()
+        {
+            using (_context)
+            {
+                _context.Database.EnsureDeleted();
+            }
+
+            new DatabaseAndWebserviceLogic(_context).InitializeDbWithCandidatesAndParties();
+        }
+
+        public IEnumerable<Candidate> GetCandidates()
+        {
+            IGetCandidatesService candidates = new GetCandidatesFromDatabaseService(_context);
+            return candidates.GetCandidates();
+        }
+
+        private void GeneratePdfFile() => throw new NotImplementedException();
+        private void GenerateCsvFile() => throw new NotImplementedException();
+        private void GenerateActualReport() => throw new NotImplementedException();
     }
 }

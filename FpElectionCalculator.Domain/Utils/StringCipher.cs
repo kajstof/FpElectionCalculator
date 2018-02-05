@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FpElectionCalculator.Domain.Services
+namespace FpElectionCalculator.Domain.Utils
 {
     public static class StringCipher
     {

@@ -1,4 +1,10 @@
-﻿namespace FpElectionCalculator.Domain.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FpElectionCalculator.Domain.DbModels;
+using FpElectionCalculator.Domain.Services;
+
+namespace FpElectionCalculator.Domain.Models
 {
     public class LoginCredentials
     {

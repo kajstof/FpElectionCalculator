@@ -11,11 +11,11 @@ namespace FpElectionCalculator.Domain.Tests
         // - pesel will shown on black list then tests can be failed!
         // - Some user did invalid vote (0 or 2, 3, ... candidates)
 
-        private static LoginValidator Execute(string firstName, string lastName, string pesel)
+        private static LoginValidation Execute(string firstName, string lastName, string pesel)
         {
             User user = new User(new LoginCredentials(firstName, lastName, pesel));
-            LoginValidator loginValidator = user.Login();
-            return loginValidator;
+            LoginValidation loginValidation = user.Login();
+            return loginValidation;
         }
 
         [Theory]
@@ -24,8 +24,8 @@ namespace FpElectionCalculator.Domain.Tests
         [InlineData("Ed", "Mu", "00210212891")]
         public void UserCanVote(string firstName, string lastName, string pesel)
         {
-            LoginValidator loginValidator = Execute(firstName, lastName, pesel);
-            Assert.True(loginValidator.Error);
+            LoginValidation loginValidation = Execute(firstName, lastName, pesel);
+            Assert.True(loginValidation.Error);
         }
 
         [Theory]
@@ -35,22 +35,22 @@ namespace FpElectionCalculator.Domain.Tests
         [InlineData("Li", "Fe", "0031021284")]
         public void UserCantVote(string firstName, string lastName, string pesel)
         {
-            LoginValidator loginValidator = Execute(firstName, lastName, pesel);
-            Assert.False(loginValidator.Error);
+            LoginValidation loginValidation = Execute(firstName, lastName, pesel);
+            Assert.False(loginValidation.Error);
         }
 
         [Fact]
         public void ReturnsLoginValidatorErrors()
         {
-            LoginValidator loginValidator = Execute("A", "B", "0");
-            Assert.False(loginValidator.Error);
-            Assert.Contains(loginValidator.LoginErrors, e => e == LoginError.UserFirstNameIsTooShort);
-            Assert.Contains(loginValidator.LoginErrors, e => e == LoginError.UserLastNameIsTooShort);
-            Assert.Contains(loginValidator.LoginErrors, e => e == LoginError.PeselIsNotValid);
+            LoginValidation loginValidation = Execute("A", "B", "0");
+            Assert.False(loginValidation.Error);
+            Assert.Contains(loginValidation.LoginErrors, e => e == LoginError.UserFirstNameIsTooShort);
+            Assert.Contains(loginValidation.LoginErrors, e => e == LoginError.UserLastNameIsTooShort);
+            Assert.Contains(loginValidation.LoginErrors, e => e == LoginError.PeselIsNotValid);
 
-            loginValidator = Execute("Ce", "De", "10321519761");
-            Assert.False(loginValidator.Error);
-            Assert.Contains(loginValidator.LoginErrors, e => e == LoginError.UserIsNotEighteen);
+            loginValidation = Execute("Ce", "De", "10321519761");
+            Assert.False(loginValidation.Warning);
+            Assert.Contains(loginValidation.LoginWarnings, e => e == LoginWarning.UserIsNotEighteen);
         }
     }
 }

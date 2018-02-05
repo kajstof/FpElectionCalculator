@@ -10,31 +10,129 @@ namespace FpElectionCalculator.Domain.Models
     {
         private LoginCredentials _loginCredentials;
         private new Pesel Pesel { get; }
+        private readonly ElectionDbContext _context;
+        private readonly IUserIsDisallowedToVoteService _userIsDisallowdToVoteService;
+        private readonly IUserAlreadyVotedService _userAlreadyVotedService;
 
-        public User(LoginCredentials loginCredentials)
+        public User(LoginCredentials loginCredentials, ElectionDbContext context, IUserIsDisallowedToVoteService userIsDisallowdToVoteService, IUserAlreadyVotedService userAlreadyVotedService)
         {
             _loginCredentials = loginCredentials;
             FirstName = loginCredentials.FirstName;
             LastName = loginCredentials.LastName;
             base.Pesel = loginCredentials.Pesel;
             Pesel = new Pesel(loginCredentials.Pesel);
+            _context = context;
+            _userIsDisallowdToVoteService = userIsDisallowdToVoteService;
+            _userAlreadyVotedService = userAlreadyVotedService;
         }
 
-        public LoginValidator Login()
+        public LoginValidation Login()
         {
-            LoginValidator loginValidator = new LoginValidator(FirstName, LastName, Pesel);
-            if (!loginValidator.Error)
+            LoginValidation loginValidation = new LoginValidation(FirstName, LastName, Pesel, _userIsDisallowdToVoteService, _userAlreadyVotedService);
+            if (!loginValidation.Error)
                 CreateUserIfNotExists();
-            return loginValidator;
+            return loginValidation;
         }
 
-        private void CreateUserIfNotExists() => DatabaseLogic.CreateUserIfNotExists(_loginCredentials);
         public bool Logout() => throw new NotImplementedException();
-
-        public bool DoVote(IEnumerable<Candidate> candidateList) =>
-            DatabaseAndWebserviceLogic.DoVote(_loginCredentials, candidateList);
-
         public bool IsPeselDisallowedToVote() => WebserviceLogic.IsPeselDisallowedToVote(Pesel.ToString());
-        public bool IsUserVoted() => DatabaseLogic.IsUserVoted(_loginCredentials);
+
+        public bool IsUserVoted()
+        {
+            bool voted = false;
+            using (_context)
+            {
+                // Find user in database
+                bool UserFunc(DbModels.User u) =>
+                    u.FirstName.Equals(FirstName)
+                    && u.LastName.Equals(LastName)
+                    && u.Pesel.Equals(Pesel);
+
+                bool userExists = _context.Users.Any(UserFunc);
+                if (userExists)
+                    voted = _context.Users.First(UserFunc).Votes.Any();
+            }
+
+            return voted;
+        }
+
+        public void CreateUserIfNotExists()
+        {
+            using (_context)
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Find user in database
+                        bool UserFunc(DbModels.User u) =>
+                            u.FirstName.Equals(FirstName)
+                            && u.LastName.Equals(LastName)
+                            && u.Pesel.Equals(Pesel);
+
+                        bool userExists = _context.Users.Any(UserFunc);
+                        if (!userExists)
+                        {
+                            _context.Users.Add(new DbModels.User()
+                            {
+                                FirstName = FirstName,
+                                LastName = LastName,
+                                Pesel = base.Pesel
+                            });
+                            transaction.Commit();
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                        }
+                    }
+                    catch (Exception) { }
+                }
+            }
+        }
+
+        public bool DoVote(IEnumerable<Candidate> candidateList)
+        {
+            bool voted = false;
+            using (_context)
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        // Find user in database
+                        bool UserFunc(DbModels.User u) =>
+                            u.FirstName.Equals(FirstName)
+                            && u.LastName.Equals(LastName)
+                            && u.Pesel.Equals(base.Pesel);
+
+                        bool userExists = _context.Users.Any(UserFunc);
+                        if (userExists)
+                        {
+                            DbModels.User user = _context.Users.Single(UserFunc);
+                            voted = user.Votes.Any();
+
+                            bool isPeselDisallowedToVote =
+                                WebserviceLogic.IsPeselDisallowedToVote(base.Pesel);
+
+                            if (!voted && !isPeselDisallowedToVote)
+                            {
+                                foreach (var candidate in candidateList)
+                                {
+                                    _context.Votes.Add(new Vote() { User = user, Candidate = candidate });
+                                }
+                            }
+
+                            ;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+
+            return voted;
+        }
     }
 }

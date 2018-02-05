@@ -24,5 +24,10 @@ namespace FpElectionCalculator.WPF
         {
             InitializeComponent();
         }
+
+        private void Button_Click()
+        {
+
+        }
     }
 }

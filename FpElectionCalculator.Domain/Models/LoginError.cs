@@ -3,10 +3,7 @@
     public enum LoginError
     {
         PeselIsNotValid,
-        UserIsNotEighteen,
         UserFirstNameIsTooShort,
         UserLastNameIsTooShort,
-        UserIsDisallowedToVote,
-        UserAlreadyVoted
     }
 }

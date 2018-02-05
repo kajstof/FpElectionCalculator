@@ -6,9 +6,16 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class WebserviceDataParserCandidatesTests
     {
+        private readonly WebserviceDataParser _parser;
+
+        public WebserviceDataParserCandidatesTests()
+        {
+            _parser = new WebserviceDataParser();
+        }
+
         private CandidatesList Execute(string json)
         {
-            return WebserviceDataParser.GetCandidatesList(json);
+            return _parser.GetCandidatesList(json);
         }
 
         [Fact]

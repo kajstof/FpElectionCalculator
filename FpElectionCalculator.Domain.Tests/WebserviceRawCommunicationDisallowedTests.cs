@@ -7,15 +7,17 @@ namespace FpElectionCalculator.Domain.Tests
     public class WebserviceRawCommunicationDisallowedTests
     {
         private readonly ITestOutputHelper _output;
+        private readonly WebserviceRawCommunication _webservice;
 
         public WebserviceRawCommunicationDisallowedTests(ITestOutputHelper output)
         {
             _output = output;
+            _webservice = new WebserviceRawCommunication();
         }
 
         private string Execute(bool xml = false)
         {
-            return WebserviceRawCommunication.GetPeopleDisallowedToVote();
+            return _webservice.GetPeopleDisallowedToVote();
         }
 
         [Fact]

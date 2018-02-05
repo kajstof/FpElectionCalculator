@@ -1,4 +1,4 @@
-﻿using FpElectionCalculator.Domain.Services;
+﻿using FpElectionCalculator.Domain.Utils;
 using Xunit;
 
 namespace FpElectionCalculator.Domain.Tests

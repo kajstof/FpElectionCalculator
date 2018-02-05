@@ -3,14 +3,14 @@ using Newtonsoft.Json.Linq;
 
 namespace FpElectionCalculator.Domain.Services
 {
-    public static class WebserviceDataParser
+    public class WebserviceDataParser
     {
-        public static CandidatesList GetCandidatesList(string json)
+        public CandidatesList GetCandidatesList(string json)
         {
             return JObject.Parse(json).SelectToken("candidates").ToObject<CandidatesList>();
         }
 
-        public static DisallowedList GetDisallowedPeopleList(string json)
+        public DisallowedList GetDisallowedPeopleList(string json)
         {
             return JObject.Parse(json).SelectToken("disallowed").ToObject<DisallowedList>();
         }

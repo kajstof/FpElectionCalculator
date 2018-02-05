@@ -8,10 +8,17 @@ namespace FpElectionCalculator.Domain.Tests
 {
     public class JsonToDbConverterTests
     {
+        private readonly WebserviceDataParser _parser;
+
+        public JsonToDbConverterTests()
+        {
+            _parser = new WebserviceDataParser();
+        }
+
         private IList<Party> Execute(string json)
         {
-            CandidatesList candidatesList = WebserviceDataParser.GetCandidatesList(json);
-            return DatabaseAndWebserviceLogic.ConvertPartiesAndCandidatesFromJsonModelToDbModel(candidatesList);
+            CandidatesList candidatesList = _parser.GetCandidatesList(json);
+            return candidatesList.ConvertToDbModel();
         }
 
         [Fact]
