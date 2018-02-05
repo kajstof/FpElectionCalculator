@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace FpElectionCalculator.Domain.Tests
 {
-    public class EmbeddedResources
+    public static class EmbeddedResources
     {
         public static string GetResource(string name)
         {

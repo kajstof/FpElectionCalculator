@@ -14,24 +14,25 @@ namespace FpElectionCalculator.Domain.Services
             _service = service;
         }
 
+        public void DeleteTablesInDatabase()
+        {
+            _context.Database.EnsureDeleted();
+        }
+
         public void InitializeDbWithCandidatesAndParties()
         {
-            // Get CandidateList from service
-            JsonModels.CandidateList candidateList = _service.GetCandidateList();
-            // Convert JsonModel to DbModel
-            ICollection<DbModels.Party> partiesDb = candidateList.ConvertToDbModel();
-
-            using (_context)
+            // Check database and records exists
+            bool databaseNotExists = _context.Database.EnsureCreated();
+            if (databaseNotExists || _context.Candidates.Any())
             {
-                // Check database and records exists
-                bool databaseNotExists = _context.Database.EnsureCreated();
-                if (!databaseNotExists && !_context.Candidates.Any())
-                {
-                    _context.AddRange(partiesDb);
-                    _context.SaveChanges();
-                }
+                // Get CandidateList from service
+                JsonModels.CandidateList candidateList = _service.GetCandidateList();
+                // Convert JsonModel to DbModel
+                ICollection<DbModels.Party> partyDbCollection = candidateList.ConvertToDbModel();
+                // Add parties collection to database and save changes
+                _context.AddRange(partyDbCollection);
+                _context.SaveChanges();
             }
-
         }
     }
 }

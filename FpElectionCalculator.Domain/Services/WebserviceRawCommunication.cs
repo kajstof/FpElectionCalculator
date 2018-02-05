@@ -25,7 +25,7 @@ namespace FpElectionCalculator.Domain.Services
 
         public string GetCandidates()
         {
-            return GetHttp("dbCandidates");
+            return GetHttp("candidates");
         }
 
         public string GetPeopleDisallowedToVote()

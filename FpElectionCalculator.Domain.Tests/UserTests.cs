@@ -17,7 +17,7 @@ namespace FpElectionCalculator.Domain.Tests
 //            User user = new User(new LoginCredentials(firstName, lastName, pesel));
 //            LoginValidation loginValidation = user.Login();
 //            return loginValidation;
-            throw NotImplementedException;
+            throw new NotImplementedException();
         }
 
         [Theory]
