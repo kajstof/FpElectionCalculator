@@ -1,4 +1,5 @@
-﻿using FpElectionCalculator.Domain.Interfaces;
+﻿using System.Text.RegularExpressions;
+using FpElectionCalculator.Domain.Interfaces;
 using FpElectionCalculator.Domain.Models;
 
 namespace FpElectionCalculator.Domain.Services
@@ -38,9 +39,13 @@ namespace FpElectionCalculator.Domain.Services
 
             if (_firstName.Length < 2)
                 LoginValidation.LoginErrors.Add(LoginError.UserFirstNameIsTooShort);
+            else if (!Regex.IsMatch(_firstName, @"^[\p{L} ]+$"))
+                LoginValidation.LoginErrors.Add(LoginError.UserFirstNameContainIllegalChars);
 
             if (_lastName.Length < 2)
                 LoginValidation.LoginErrors.Add(LoginError.UserLastNameIsTooShort);
+            else if (!Regex.IsMatch(_lastName, @"^[\p{L} ]+$"))
+                LoginValidation.LoginErrors.Add(LoginError.UserLastNameContainIllegalChars);
 
             return LoginValidation.Error;
         }

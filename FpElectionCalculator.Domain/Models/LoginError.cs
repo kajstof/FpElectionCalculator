@@ -4,6 +4,8 @@
     {
         PeselIsNotValid,
         UserFirstNameIsTooShort,
+        UserFirstNameContainIllegalChars,
         UserLastNameIsTooShort,
+        UserLastNameContainIllegalChars
     }
 }

@@ -24,7 +24,7 @@ namespace FpElectionCalculator.Domain.Services
         {
             // Check database and records exists
             bool databaseNotExists = _context.Database.EnsureCreated();
-            if (databaseNotExists || _context.Candidates.Any())
+            if (databaseNotExists || !_context.Candidates.Any())
             {
                 // Get CandidateList from service
                 JsonModels.CandidateList candidateList = _service.GetCandidateList();
