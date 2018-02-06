@@ -48,7 +48,7 @@ namespace FpElectionCalculator.CLI
                 do
                 {
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("- Please login");
+                    Console.WriteLine("----- Login to system -----");
                     LoginCredentials loginCredentials = GetCredentialsFromConsole();
                     User user = new Domain.Models.User(loginCredentials, context, webservice);
                     LoginValidation loginValidation = user.Login();
@@ -78,26 +78,15 @@ namespace FpElectionCalculator.CLI
                             Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine($"- User logged : {user.FirstName} / {user.LastName} / {user.Pesel}");
 
-                            if (user.Voted)
-                            {
-                                Console.WriteLine("You've already voted to:");
-                                if (user.Votes.Count != 0)
-                                {
-                                    foreach (var vote in user.Votes)
-                                    {
-                                        Console.WriteLine($"{vote.Candidate.Name} / {vote.Candidate.Party.Name}");
-                                    }
-                                }
-                                else
-                                    Console.WriteLine("Empty vote");
-                            }
-                            else
+                            if (!loginValidation.LoginWarnings.Contains(LoginWarning.UserAlreadyVoted))
                             {
                                 IList<Candidate> candidates = context.Candidates.ToList();
+                                IList<Party> parties = context.Parties.ToList();
                                 Console.ForegroundColor = ConsoleColor.Magenta;
                                 for (int i = 0; i < candidates.Count; i++)
                                 {
-                                    Console.WriteLine($"{i + 1}] {candidates[i].Name}");
+                                    Console.WriteLine(
+                                        $"{i + 1}] {candidates[i].Name} / {parties.Single(x => x.PartyId == candidates[i].PartyId).Name}");
                                 }
 
                                 int[] parsedChoice;
@@ -128,14 +117,19 @@ namespace FpElectionCalculator.CLI
                                     Console.WriteLine($"You voted to nobody");
 
                                 foreach (var c in candidates)
-                                    Console.WriteLine($"You voted to {c.Name} / {c.Party.Name}");
+                                    Console.WriteLine(
+                                        $"You voted to {c.Name} / {parties.Single(x => x.PartyId == c.PartyId).Name}");
 
                                 user.Vote(candidates);
 
-                                // Get Results
+                                // Get Results TODO
+                                GetDbVotesList votesService = new GetDbVotesList(context);
+                                votesService.GetVoteStatistics();
                             }
 
                             user.Logout();
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("- User logout");
                         }
                     }
                 } while (true);
