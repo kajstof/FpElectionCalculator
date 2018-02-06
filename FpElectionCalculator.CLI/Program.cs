@@ -117,12 +117,22 @@ namespace FpElectionCalculator.CLI
 
                                 Console.ForegroundColor = ConsoleColor.Yellow;
 
-                                for (int i = candidates.Count; i >= 0; i--)
+                                for (int i = candidates.Count; i > 0; i--)
                                 {
-                                    if (parsedChoice.Any(x => x == i + 1))
-                                        candidates.RemoveAt(i);
+                                    if (!parsedChoice.Any(x => x == i))
+                                        candidates.RemoveAt(i - 1);
                                 }
+
+                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                if (candidates.Count == 0)
+                                    Console.WriteLine($"You voted to nobody");
+
+                                foreach (var c in candidates)
+                                    Console.WriteLine($"You voted to {c.Name} / {c.Party.Name}");
+
                                 user.Vote(candidates);
+
+                                // Get Results
                             }
 
                             user.Logout();

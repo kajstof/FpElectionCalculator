@@ -34,8 +34,8 @@ namespace FpElectionCalculator.Domain.Services
             // Is user logged
             if (_logged)
             {
-                using (var transaction = _context.Database.BeginTransaction())
-                {
+//                using (var transaction = _context.Database.BeginTransaction())
+//                {
                     // Prepare user predicate function
                     bool UserPredicate(DbModels.User u) =>
                         u.FirstName.Equals(_loginCredentials.FirstName)
@@ -58,9 +58,10 @@ namespace FpElectionCalculator.Domain.Services
 
                             user.Voted = true;
                             _context.SaveChanges();
+//                            _context.Database.CommitTransaction();
                         }
                     }
-                }
+//                }
             }
 
             return voted;

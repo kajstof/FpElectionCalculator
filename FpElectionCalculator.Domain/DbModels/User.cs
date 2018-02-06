@@ -16,11 +16,12 @@ namespace FpElectionCalculator.Domain.DbModels
         public string Comment { get; set; }
 
         private string _hash = "FuTur3pr0C3$s!nG#";
-        private string _pesel;
+        public string PeselHashed { get; set; }
+        [NotMapped]
         public string Pesel
         {
-            get => StringCipher.Decrypt(_pesel, _hash);
-            set => _pesel = StringCipher.Encrypt(value, _hash);
+            get => StringCipher.Decrypt(PeselHashed, _hash);
+            set => PeselHashed = StringCipher.Encrypt(value, _hash);
         }
 
         public bool Voted { get; set; }
