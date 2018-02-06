@@ -1,138 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using FpElectionCalculator.Domain.DbModels;
+using FpElectionCalculator.Domain.Interfaces;
 using FpElectionCalculator.Domain.Services;
 
 namespace FpElectionCalculator.Domain.Models
 {
     public class User : DbModels.User
     {
-        private LoginCredentials _loginCredentials;
-        private new Pesel Pesel { get; }
+        private readonly LoginCredentials _loginCredentials;
         private readonly ElectionDbContext _context;
-        private readonly IUserIsDisallowedToVoteService _userIsDisallowdToVoteService;
-        private readonly IUserAlreadyVotedService _userAlreadyVotedService;
+        private readonly WebserviceRawCommunication _webservice;
+        private readonly ICheckUserAlreadyVotedService _checkUserAlreadyVotedService;
+        private readonly ICheckUserIsDisallowedToVoteService _checkUserIsDisallowdToVoteService;
+        public bool Logged { get; private set; }
+        private readonly ILoginValidatorService _loginValidatorService;
 
-        public User(LoginCredentials loginCredentials, ElectionDbContext context, IUserIsDisallowedToVoteService userIsDisallowdToVoteService, IUserAlreadyVotedService userAlreadyVotedService)
+        public User(LoginCredentials loginCredentials, ElectionDbContext context, WebserviceRawCommunication webservice)
         {
             _loginCredentials = loginCredentials;
             FirstName = loginCredentials.FirstName;
             LastName = loginCredentials.LastName;
-            base.Pesel = loginCredentials.Pesel;
-            Pesel = new Pesel(loginCredentials.Pesel);
+            Pesel = loginCredentials.Pesel;
             _context = context;
-            _userIsDisallowdToVoteService = userIsDisallowdToVoteService;
-            _userAlreadyVotedService = userAlreadyVotedService;
+            _webservice = webservice;
+            _checkUserAlreadyVotedService = new CheckUserAlreadyVotedFromDbService(loginCredentials, context);
+            _checkUserIsDisallowdToVoteService = new CheckUserIsDisallowedToVoteService(webservice);
+            _loginValidatorService = new LoginValidatorService(loginCredentials.FirstName, loginCredentials.LastName,
+                Pesel, _checkUserIsDisallowdToVoteService, _checkUserAlreadyVotedService);
         }
 
         public LoginValidation Login()
         {
-            LoginValidation loginValidation = new LoginValidation(FirstName, LastName, Pesel, _userIsDisallowdToVoteService, _userAlreadyVotedService);
-            if (!loginValidation.Error)
+            _loginValidatorService.Validate();
+            if (!_loginValidatorService.LoginValidation.Error)
+            {
                 CreateUserIfNotExists();
-            return loginValidation;
-        }
-
-        public bool Logout() => throw new NotImplementedException();
-        public bool IsPeselDisallowedToVote() => WebserviceRepository.IsPeselDisallowedToVote(Pesel.ToString());
-
-        public bool IsUserVoted()
-        {
-            bool voted = false;
-            using (_context)
-            {
-                // Find user in database
-                bool UserFunc(DbModels.User u) =>
-                    u.FirstName.Equals(FirstName)
-                    && u.LastName.Equals(LastName)
-                    && u.Pesel.Equals(Pesel);
-
-                bool userExists = _context.Users.Any(UserFunc);
-                if (userExists)
-                    voted = _context.Users.First(UserFunc).Votes.Any();
+                Logged = true;
             }
 
-            return voted;
+            return _loginValidatorService.LoginValidation;
         }
 
-        public void CreateUserIfNotExists()
-        {
-            using (_context)
-            {
-                using (var transaction = _context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        // Find user in database
-                        bool UserFunc(DbModels.User u) =>
-                            u.FirstName.Equals(FirstName)
-                            && u.LastName.Equals(LastName)
-                            && u.Pesel.Equals(Pesel);
+        public bool Vote(IEnumerable<Candidate> candidateList) =>
+            new VoteToDbService(Logged, _loginCredentials, _loginValidatorService, _context, _webservice).Vote(
+                candidateList);
 
-                        bool userExists = _context.Users.Any(UserFunc);
-                        if (!userExists)
-                        {
-                            _context.Users.Add(new DbModels.User()
-                            {
-                                FirstName = FirstName,
-                                LastName = LastName,
-                                Pesel = base.Pesel
-                            });
-                            transaction.Commit();
-                        }
-                        else
-                        {
-                            transaction.Rollback();
-                        }
-                    }
-                    catch (Exception) { }
-                }
-            }
-        }
+        public bool Logout() => Logged = false;
 
-        public bool DoVote(IEnumerable<Candidate> candidateList)
-        {
-            bool voted = false;
-            using (_context)
-            {
-                using (var transaction = _context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        // Find user in database
-                        bool UserFunc(DbModels.User u) =>
-                            u.FirstName.Equals(FirstName)
-                            && u.LastName.Equals(LastName)
-                            && u.Pesel.Equals(base.Pesel);
-
-                        bool userExists = _context.Users.Any(UserFunc);
-                        if (userExists)
-                        {
-                            DbModels.User user = _context.Users.Single(UserFunc);
-                            voted = user.Votes.Any();
-
-                            bool isPeselDisallowedToVote =
-                                WebserviceRepository.IsPeselDisallowedToVote(base.Pesel);
-
-                            if (!voted && !isPeselDisallowedToVote)
-                            {
-                                foreach (var candidate in candidateList)
-                                {
-                                    _context.Votes.Add(new Vote() { User = user, Candidate = candidate });
-                                }
-                            }
-
-                            ;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
-
-            return voted;
-        }
+        private bool CreateUserIfNotExists() => new CreateUserInDbService(_context).CreateUser(_loginCredentials);
     }
 }

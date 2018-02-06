@@ -1,12 +1,13 @@
+using FpElectionCalculator.Domain.Interfaces;
 using FpElectionCalculator.Domain.JsonModels;
 
 namespace FpElectionCalculator.Domain.Services
 {
-    public class GetJsonCandidateListService : IGetJsonCandidateListService
+    public class GetJsonCandidateListFromWsService : IGetJsonCandidateListService
     {
         private readonly WebserviceRawCommunication _webservice;
 
-        public GetJsonCandidateListService(WebserviceRawCommunication webservice)
+        public GetJsonCandidateListFromWsService(WebserviceRawCommunication webservice)
         {
             _webservice = webservice;
         }

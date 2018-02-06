@@ -1,23 +1,59 @@
 ﻿using System;
+using System.IO;
+using FpElectionCalculator.Domain.DbModels;
+using FpElectionCalculator.Domain.Interfaces;
 using FpElectionCalculator.Domain.Models;
+using FpElectionCalculator.Domain.Services;
+using Microsoft.Extensions.Configuration;
 using Xunit;
+using User = FpElectionCalculator.Domain.Models.User;
 
 namespace FpElectionCalculator.Domain.Tests
 {
-    public class UserLoginTests
+    public class DatabaseAndWebserviceFixture
     {
+        public ElectionDbContext Context { get; }
+        public WebserviceRawCommunication Webservice { get; }
+        public static IConfigurationRoot Configuration { get; private set; }
+
+        public DatabaseAndWebserviceFixture()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+
+            Context = new ElectionDbContext(Configuration.GetConnectionString("FpElectionDatabase"));
+            Webservice = new WebserviceRawCommunication();
+
+            // Try to create database (if not exists) and populate with candidates data
+            var dbInitializer = new DatabaseInitializer(Context, new GetJsonCandidateListFromWsService(Webservice));
+            dbInitializer.DeleteTablesInDatabase();
+            dbInitializer.InitializeDbWithCandidatesAndParties();
+        }
+    }
+
+    public class UserLoginTests : IClassFixture<DatabaseAndWebserviceFixture>
+    {
+        private DatabaseAndWebserviceFixture _fixture;
+
+        public UserLoginTests(DatabaseAndWebserviceFixture fixture)
+        {
+            _fixture = fixture;
+        }
+
         // Attention!
         // Data used for these tests are depend from other sources (like webservice or database)
         // If eg.:
         // - pesel will shown on black list then tests can be failed!
         // - Some user did invalid vote (0 or 2, 3, ... candidates)
 
-        private static LoginValidation Execute(string firstName, string lastName, string pesel)
+        private LoginValidation Execute(string firstName, string lastName, string pesel)
         {
-//            User user = new User(new LoginCredentials(firstName, lastName, pesel));
-//            LoginValidation loginValidation = user.Login();
-//            return loginValidation;
-            throw new NotImplementedException();
+            LoginCredentials loginCredentials = new LoginCredentials(firstName, lastName, pesel);
+            Domain.Models.User user = new Domain.Models.User(loginCredentials, _fixture.Context, _fixture.Webservice);
+            LoginValidation loginValidation = user.Login();
+            return loginValidation;
         }
 
         [Theory]
@@ -27,7 +63,7 @@ namespace FpElectionCalculator.Domain.Tests
         public void UserCanVote(string firstName, string lastName, string pesel)
         {
             LoginValidation loginValidation = Execute(firstName, lastName, pesel);
-            Assert.True(loginValidation.Error);
+            Assert.False(loginValidation.Error && loginValidation.Warning);
         }
 
         [Theory]
@@ -38,21 +74,25 @@ namespace FpElectionCalculator.Domain.Tests
         public void UserCantVote(string firstName, string lastName, string pesel)
         {
             LoginValidation loginValidation = Execute(firstName, lastName, pesel);
-            Assert.False(loginValidation.Error);
+            Assert.True(loginValidation.Error || loginValidation.Warning);
         }
 
         [Fact]
         public void ReturnsLoginValidatorErrors()
         {
             LoginValidation loginValidation = Execute("A", "B", "0");
-            Assert.False(loginValidation.Error);
-            Assert.Contains(loginValidation.LoginErrors, e => e == LoginError.UserFirstNameIsTooShort);
-            Assert.Contains(loginValidation.LoginErrors, e => e == LoginError.UserLastNameIsTooShort);
-            Assert.Contains(loginValidation.LoginErrors, e => e == LoginError.PeselIsNotValid);
+            Assert.True(loginValidation.Error);
+            Assert.Contains(loginValidation.LoginErrors,
+                e => e == LoginError.UserFirstNameIsTooShort);
+            Assert.Contains(loginValidation.LoginErrors,
+                e => e == LoginError.UserLastNameIsTooShort);
+            Assert.Contains(loginValidation.LoginErrors,
+                e => e == LoginError.PeselIsNotValid);
 
             loginValidation = Execute("Ce", "De", "10321519761");
-            Assert.False(loginValidation.Warning);
-            Assert.Contains(loginValidation.LoginWarnings, e => e == LoginWarning.UserIsNotEighteen);
+            Assert.True(loginValidation.Warning);
+            Assert.Contains(loginValidation.LoginWarnings,
+                e => e == LoginWarning.UserIsNotEighteen);
         }
     }
 }

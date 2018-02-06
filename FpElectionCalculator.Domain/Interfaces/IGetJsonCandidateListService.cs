@@ -1,4 +1,4 @@
-namespace FpElectionCalculator.Domain.Services
+namespace FpElectionCalculator.Domain.Interfaces
 {
     public interface IGetJsonCandidateListService
     {

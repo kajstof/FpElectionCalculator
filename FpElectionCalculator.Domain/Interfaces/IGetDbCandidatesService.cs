@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FpElectionCalculator.Domain.Services
+namespace FpElectionCalculator.Domain.Interfaces
 {
     public interface IGetDbCandidatesService
     {

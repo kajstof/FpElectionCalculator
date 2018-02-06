@@ -21,7 +21,7 @@ namespace FpElectionCalculator.Domain.Tests
         [Fact]
         public void ParsesJsonResponse()
         {
-            var ex = Record.Exception(() => Execute(EmbeddedResources.GetResource("dbCandidates.json")));
+            var ex = Record.Exception(() => Execute(EmbeddedResources.GetResource("candidates.json")));
             Assert.Null(ex);
         }
 

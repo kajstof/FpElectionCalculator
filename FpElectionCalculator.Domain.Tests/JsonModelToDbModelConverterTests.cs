@@ -24,7 +24,7 @@ namespace FpElectionCalculator.Domain.Tests
         [Fact]
         public void ReturnsIListPartyObject()
         {
-            IList<DbModels.Party> parties = Execute(EmbeddedResources.GetResource("dbCandidates.json"));
+            IList<DbModels.Party> parties = Execute(EmbeddedResources.GetResource("candidates.json"));
             Assert.NotEmpty(parties);
             Assert.Equal(4, parties.Count);
             Assert.All(parties, p => Assert.True(p.Name.Length > 0));

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FpElectionCalculator.Domain.Interfaces;
 
 namespace FpElectionCalculator.Domain.Services
 {

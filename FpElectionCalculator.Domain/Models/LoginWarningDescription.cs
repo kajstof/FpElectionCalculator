@@ -18,7 +18,7 @@
                     description = "You can't vote again";
                     break;
                 default:
-                    description = "Unknown error";
+                    description = "Unknown warning";
                     break;
             }
 
