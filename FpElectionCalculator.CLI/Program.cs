@@ -116,9 +116,11 @@ namespace FpElectionCalculator.CLI
                                 } while (parsedChoice == null);
 
                                 Console.ForegroundColor = ConsoleColor.Yellow;
-                                foreach (var c in parsedChoice)
+
+                                for (int i = candidates.Count; i >= 0; i--)
                                 {
-                                    candidates.RemoveAt(c - 1);
+                                    if (parsedChoice.Any(x => x == i + 1))
+                                        candidates.RemoveAt(i);
                                 }
                                 user.Vote(candidates);
                             }

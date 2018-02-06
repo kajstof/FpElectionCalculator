@@ -19,30 +19,23 @@ namespace FpElectionCalculator.Domain.Services
         {
             bool userCreated = false;
 
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                // Find user in database
-                bool UserPredicate(DbModels.User u) =>
-                    u.FirstName.Equals(loginCredentials.FirstName)
-                    && u.LastName.Equals(loginCredentials.LastName)
-                    && u.Pesel.Equals(loginCredentials.Pesel);
+            // Find user in database
+            bool UserPredicate(DbModels.User u) =>
+                u.FirstName.Equals(loginCredentials.FirstName)
+                && u.LastName.Equals(loginCredentials.LastName)
+                && u.Pesel.Equals(loginCredentials.Pesel);
 
-                // Check user exists
-                if (!_context.Users.Any(UserPredicate))
+            // Check user exists
+            if (!_context.Users.Any(UserPredicate))
+            {
+                _context.Users.Add(new DbModels.User()
                 {
-                    _context.Users.Add(new DbModels.User()
-                    {
-                        FirstName = loginCredentials.FirstName,
-                        LastName = loginCredentials.LastName,
-                        Pesel = loginCredentials.Pesel
-                    });
-                    transaction.Commit();
-                    userCreated = true;
-                }
-                else
-                {
-                    transaction.Rollback();
-                }
+                    FirstName = loginCredentials.FirstName,
+                    LastName = loginCredentials.LastName,
+                    Pesel = loginCredentials.Pesel
+                });
+                _context.SaveChanges();
+                userCreated = true;
             }
 
             return userCreated;

@@ -22,9 +22,7 @@ namespace FpElectionCalculator.Domain.Services
             bool UserPredicate(DbModels.User u) =>
                 u.FirstName.Equals(_loginCredentials.FirstName)
                 && u.LastName.Equals(_loginCredentials.LastName)
-                && u.Pesel.Equals(_loginCredentials.Pesel)
-                && u.Voted
-                && u.Votes.Count == 0;
+                && u.Pesel.Equals(_loginCredentials.Pesel);
 
             // Check for exists user who voted
             return _context.Users.Any(UserPredicate);
