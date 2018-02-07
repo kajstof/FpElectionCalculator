@@ -1,6 +1,10 @@
 # Future Processing Election Calculator (Notes)
 
-### Build [![Build Status](https://travis-ci.org/kajstof/FpElectionCalculator.svg?branch=master)](https://travis-ci.org/kajstof/FpElectionCalculator) [![CircleCI](https://circleci.com/gh/kajstof/FpElectionCalculator.svg?style=svg)](https://circleci.com/gh/kajstof/FpElectionCalculator)
+### Build
+
+TravisCI [![Build Status](https://travis-ci.org/kajstof/FpElectionCalculator.svg?branch=master)](https://travis-ci.org/kajstof/FpElectionCalculator)
+
+CircleCI [![CircleCI](https://circleci.com/gh/kajstof/FpElectionCalculator.svg?style=svg)](https://circleci.com/gh/kajstof/FpElectionCalculator)
 
 ## Api Queries
 
