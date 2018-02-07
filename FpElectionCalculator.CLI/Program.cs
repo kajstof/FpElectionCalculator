@@ -62,11 +62,22 @@ namespace FpElectionCalculator.CLI
         private static void VoteStatistics(ElectionDbContext context)
         {
             GetDbVotesStatistics statistics = new GetDbVotesStatistics(context);
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"Total votes: {statistics.GetVotesCount()}");
+            var validVotes = statistics.GetValidVotesCount();
+            Console.WriteLine($"Valid votes: {validVotes.Item1} ({validVotes.Item2:F4}%)");
+            (int invalidVotes, double invalidVotesPercent) = statistics.GetInvalidVotesCount();
+            Console.WriteLine($"Invalid votes: {invalidVotes} ({invalidVotesPercent:F4}%)");
+            List<CandidateResult> votesResults = statistics.GetVotesResults();
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"Number of all votes: {statistics.GetVotesCount()}");
-            Console.WriteLine($"Valid number of votes: {statistics.GetValidVotesCount()}");
-            Console.WriteLine($"Inalid number of votes: {statistics.GetInvalidVotesCount()}");
-            // TODO Candidates list
+            Console.WriteLine("No] {0,-50} | Votes | Votes [%]", "Candidate / Party");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            int counter = 1;
+            foreach (var vote in votesResults)
+            {
+                var name = $"{vote.CandidateName} / {vote.PartyName}";
+                Console.WriteLine("{0,2:D}] {1,-50} | {2,5} | {3,8:F4}%", counter++, name, vote.VotesCount, vote.VotesPercent);
+            }
         }
 
         private static void LoginUserMethod(ElectionDbContext context, WebserviceRawCommunication webservice)
@@ -102,7 +113,8 @@ namespace FpElectionCalculator.CLI
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine($"- User logged : {user.FirstName} / {user.LastName} / {user.Pesel}");
 
-                    if (!loginValidation.LoginWarnings.Contains(LoginWarning.UserAlreadyVoted))
+                    if (!loginValidation.LoginWarnings.Contains(LoginWarning.UserAlreadyVoted) &&
+                        !loginValidation.LoginWarnings.Contains(LoginWarning.UserIsDisallowedToVote))
                     {
                         IList<Candidate> candidates = context.Candidates.ToList();
                         IList<Party> parties = context.Parties.ToList();
@@ -145,10 +157,10 @@ namespace FpElectionCalculator.CLI
                                 $"You voted to {c.Name} / {parties.Single(x => x.PartyId == c.PartyId).Name}");
 
                         user.Vote(candidates);
-
-                        // Get Vote statistics
-                        VoteStatistics(context);
                     }
+
+                    // Get Vote statistics
+                    VoteStatistics(context);
 
                     user.Logout();
                     Console.ForegroundColor = ConsoleColor.Cyan;

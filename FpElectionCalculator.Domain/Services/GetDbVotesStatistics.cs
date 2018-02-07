@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FpElectionCalculator.Domain.DbModels;
-using Microsoft.EntityFrameworkCore;
+using FpElectionCalculator.Domain.Models;
 
 namespace FpElectionCalculator.Domain.Services
 {
@@ -17,22 +15,44 @@ namespace FpElectionCalculator.Domain.Services
         }
 
         public int GetVotesCount() => _context.Users.Count(u => u.Voted);
-        public int GetValidVotesCount() => _context.Votes.GroupBy(n => n.UserId).Count(n => n.Count() == 1);
-        public int GetInvalidVotesCount() => GetVotesCount() - GetValidVotesCount();
 
-        public ICollection<(string candidate, string party, int votes, double votesPercent)> GetVotesResults()
+        public (int, double) GetValidVotesCount()
         {
-            IQueryable<IGrouping<int, Candidate>> xxx = _context.Votes.GroupBy(n => n.UserId).Where(n => n.Count() == 1)
-                .Select(votes => votes.First().Candidate).GroupBy(c => c.CandidateId);
+            int totalVotes = GetVotesCount();
+            if (totalVotes == 0)
+                return (0, 0);
+            int validVotes = _context.Votes.GroupBy(n => n.UserId).Count(n => n.Count() == 1);
+            double votesPercent = (double) validVotes / totalVotes * 100;
+            return (validVotes, votesPercent);
+        }
 
-            ICollection<(string candidate, string party, int votes, double votesPercent)> response =
-                new List<(string candidate, string party, int votes, double votesPercent)>();
-            foreach (var x in xxx)
-            {
-            }
+        public (int, double) GetInvalidVotesCount()
+        {
+            (int validVotes, double _) = GetValidVotesCount();
+            int totalVotes = GetVotesCount();
+            if (totalVotes == 0)
+                return (0, 0);
+            int invalidVotes = GetVotesCount() - validVotes;
+            double votesPercent = (double) invalidVotes / totalVotes * 100;
+            return (invalidVotes, votesPercent);
+        }
 
-            // TODO
-            throw new NotImplementedException();
+        public List<CandidateResult> GetVotesResults()
+        {
+            var votesCount = GetVotesCount();
+            List<CandidateResult> candidates = _context.Votes.GroupBy(n => n.UserId) // Grouped Votes by UserId
+                .Where(n => n.Count() == 1) // Filter only where is exactly 1 vote (valid votes)
+                .Select(votes => votes.Single().Candidate) // Select Candidate (one level deeper)
+                .GroupBy(c => c.CandidateId) // Group the same candidates
+                .Select(c => new CandidateResult // Create new type with results
+                {
+                    CandidateName = c.First().Name,
+                    PartyName = c.First().Party.Name,
+                    VotesCount = c.Count(),
+                    VotesPercent = ((double) c.Count() / votesCount) * 100.0
+                }).OrderByDescending(r => r.VotesCount).ToList();
+
+            return candidates;
         }
     }
 }
