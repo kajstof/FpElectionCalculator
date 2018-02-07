@@ -153,7 +153,7 @@ namespace FpElectionCalculator.CLI
             Console.WriteLine("q] Quit");
             Console.ForegroundColor = ConsoleColor.White;
             char[] options = {'Q', 'q', '1'};
-            char key = 'q';
+            char key;
             do
             {
                 Console.Write("What are you going to do: ");
