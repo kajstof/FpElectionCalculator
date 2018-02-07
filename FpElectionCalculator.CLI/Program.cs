@@ -39,103 +39,107 @@ namespace FpElectionCalculator.CLI
                 //dbInitializer.DeleteTablesInDatabase();
                 dbInitializer.InitializeDbWithCandidatesAndParties();
 
-                char key;
-                while (key = ReadKeyOption())
+                KeyOption key;
+                do
                 {
+                    key = ReadKeyOption();
                     switch (key)
                     {
-                        
+                        case KeyOption.Login:
+                            LoginUserMethod(context, webservice);
+                            break;
+                        case KeyOption.Quit:
+                            break;
                     }
-                    do
+                } while (key != KeyOption.Quit);
+            }
+        }
+
+        private static void LoginUserMethod(ElectionDbContext context, WebserviceRawCommunication webservice)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("----- Login to system -----");
+            LoginCredentials loginCredentials = GetCredentialsFromConsole();
+            User user = new Domain.Models.User(loginCredentials, context, webservice);
+            LoginValidation loginValidation = user.Login();
+
+            if (loginValidation.Error)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                foreach (var error in loginValidation.LoginErrors)
+                {
+                    Console.WriteLine($"- Error: {LoginErrorDescription.GetDescription(error)}");
+                }
+            }
+
+            if (loginValidation.Warning)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                foreach (var warning in loginValidation.LoginWarnings)
+                {
+                    Console.WriteLine($"- Warning: {LoginWarningDescription.GetDescription(warning)}");
+                }
+            }
+
+            if (!loginValidation.Error)
+            {
+                if (user.Logged)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"- User logged : {user.FirstName} / {user.LastName} / {user.Pesel}");
+
+                    if (!loginValidation.LoginWarnings.Contains(LoginWarning.UserAlreadyVoted))
                     {
+                        IList<Candidate> candidates = context.Candidates.ToList();
+                        IList<Party> parties = context.Parties.ToList();
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine("----- Login to system -----");
-                        LoginCredentials loginCredentials = GetCredentialsFromConsole();
-                        User user = new Domain.Models.User(loginCredentials, context, webservice);
-                        LoginValidation loginValidation = user.Login();
-
-                        if (loginValidation.Error)
+                        for (int i = 0; i < candidates.Count; i++)
                         {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            foreach (var error in loginValidation.LoginErrors)
-                            {
-                                Console.WriteLine($"- Error: {LoginErrorDescription.GetDescription(error)}");
-                            }
+                            Console.WriteLine(
+                                $"{i + 1}] {candidates[i].Name} / {parties.Single(x => x.PartyId == candidates[i].PartyId).Name}");
                         }
 
-                        if (loginValidation.Warning)
+                        int[] parsedChoice;
+                        do
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            foreach (var warning in loginValidation.LoginWarnings)
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("Please enter you candidate (or candidates) no [eg. \"1,5,10\"]: ");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            string candidatesRead = Console.ReadLine();
+                            parsedChoice = ChoiceParser.Parse(candidatesRead, candidates.Count);
+                            if (parsedChoice == null)
                             {
-                                Console.WriteLine($"- Warning: {LoginWarningDescription.GetDescription(warning)}");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine($"- Error: Illegal characters in your response");
                             }
+                        } while (parsedChoice == null);
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+
+                        for (int i = candidates.Count; i > 0; i--)
+                        {
+                            if (!parsedChoice.Any(x => x == i))
+                                candidates.RemoveAt(i - 1);
                         }
 
-                        if (!loginValidation.Error)
-                        {
-                            if (user.Logged)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine($"- User logged : {user.FirstName} / {user.LastName} / {user.Pesel}");
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        if (candidates.Count == 0)
+                            Console.WriteLine($"You voted to nobody");
 
-                                if (!loginValidation.LoginWarnings.Contains(LoginWarning.UserAlreadyVoted))
-                                {
-                                    IList<Candidate> candidates = context.Candidates.ToList();
-                                    IList<Party> parties = context.Parties.ToList();
-                                    Console.ForegroundColor = ConsoleColor.Magenta;
-                                    for (int i = 0; i < candidates.Count; i++)
-                                    {
-                                        Console.WriteLine(
-                                            $"{i + 1}] {candidates[i].Name} / {parties.Single(x => x.PartyId == candidates[i].PartyId).Name}");
-                                    }
+                        foreach (var c in candidates)
+                            Console.WriteLine(
+                                $"You voted to {c.Name} / {parties.Single(x => x.PartyId == c.PartyId).Name}");
 
-                                    int[] parsedChoice;
-                                    do
-                                    {
-                                        Console.ForegroundColor = ConsoleColor.Yellow;
-                                        Console.Write("Please enter you candidate (or candidates) no [eg. \"1,5,10\"]: ");
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                        string candidatesRead = Console.ReadLine();
-                                        parsedChoice = ChoiceParser.Parse(candidatesRead, candidates.Count);
-                                        if (parsedChoice == null)
-                                        {
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.WriteLine($"- Error: Illegal characters in your response");
-                                        }
-                                    } while (parsedChoice == null);
+                        user.Vote(candidates);
 
-                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                        // Get Results TODO
+                        GetDbVotesList votesService = new GetDbVotesList(context);
+                        votesService.GetVoteStatistics();
+                    }
 
-                                    for (int i = candidates.Count; i > 0; i--)
-                                    {
-                                        if (!parsedChoice.Any(x => x == i))
-                                            candidates.RemoveAt(i - 1);
-                                    }
-
-                                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    if (candidates.Count == 0)
-                                        Console.WriteLine($"You voted to nobody");
-
-                                    foreach (var c in candidates)
-                                        Console.WriteLine(
-                                            $"You voted to {c.Name} / {parties.Single(x => x.PartyId == c.PartyId).Name}");
-
-                                    user.Vote(candidates);
-
-                                    // Get Results TODO
-                                    GetDbVotesList votesService = new GetDbVotesList(context);
-                                    votesService.GetVoteStatistics();
-                                }
-
-                                user.Logout();
-                                Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.WriteLine("- User logout");
-                            }
-                        }
-                    } while (true);
-
-                    key = Console.ReadKey();
+                    user.Logout();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("- User logout");
                 }
             }
         }
@@ -153,7 +157,9 @@ namespace FpElectionCalculator.CLI
             do
             {
                 Console.Write("What are you going to do: ");
-            } while (options.Any(c => c.Equals(key = Console.ReadKey().KeyChar)));
+                key = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+            } while (!options.Any(c => c.Equals(key)));
 
             switch (key)
             {

@@ -16,7 +16,7 @@ namespace FpElectionCalculator.Domain.Services
         public string GetVoteStatistics()
         {
             // TODO
-            throw new NotImplementedException();
+            return String.Empty;
         }
     }
 }
