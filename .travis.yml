@@ -5,5 +5,4 @@ dotnet: 2.1.4
 script:
   - dotnet restore
   - dotnet build
-  - dotnet test FpElectionCalculator.Domain.Tests/FpElectionCalculator.Domain.Tests.csproj
-
+  - dotnet test FpElectionCalculator.Domain.Tests/FpElectionCalculator.Domain.Tests.csproj --filter Category!=notcircleci 
