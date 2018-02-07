@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/tmp
     docker:
-      - image: microsoft/dotnet:2.0.5-sdk-stretch
+      - image: microsoft/dotnet:2.0.5-sdk-2.1.4-stretch
     steps:
       - checkout
       - run: dotnet restore
