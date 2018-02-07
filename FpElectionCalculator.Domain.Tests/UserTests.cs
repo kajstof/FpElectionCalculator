@@ -1,12 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using FpElectionCalculator.Domain.DbModels;
-using FpElectionCalculator.Domain.Interfaces;
 using FpElectionCalculator.Domain.Models;
 using FpElectionCalculator.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Xunit;
-using User = FpElectionCalculator.Domain.Models.User;
 
 namespace FpElectionCalculator.Domain.Tests
 {
