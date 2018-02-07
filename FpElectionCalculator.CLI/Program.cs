@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using FpElectionCalculator.Domain.DbModels;
 using FpElectionCalculator.Domain.Models;
 using FpElectionCalculator.Domain.Services;
@@ -48,11 +49,24 @@ namespace FpElectionCalculator.CLI
                         case KeyOption.Login:
                             LoginUserMethod(context, webservice);
                             break;
+                        case KeyOption.VoteStatistics:
+                            VoteStatistics(context);
+                            break;
                         case KeyOption.Quit:
                             break;
                     }
                 } while (key != KeyOption.Quit);
             }
+        }
+
+        private static void VoteStatistics(ElectionDbContext context)
+        {
+            GetDbVotesStatistics statistics = new GetDbVotesStatistics(context);
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine($"Number of all votes: {statistics.GetVotesCount()}");
+            Console.WriteLine($"Valid number of votes: {statistics.GetValidVotesCount()}");
+            Console.WriteLine($"Inalid number of votes: {statistics.GetInvalidVotesCount()}");
+            // TODO Candidates list
         }
 
         private static void LoginUserMethod(ElectionDbContext context, WebserviceRawCommunication webservice)
@@ -132,9 +146,8 @@ namespace FpElectionCalculator.CLI
 
                         user.Vote(candidates);
 
-                        // Get Results TODO
-                        GetDbVotesList votesService = new GetDbVotesList(context);
-                        votesService.GetVoteStatistics();
+                        // Get Vote statistics
+                        VoteStatistics(context);
                     }
 
                     user.Logout();
@@ -150,9 +163,10 @@ namespace FpElectionCalculator.CLI
             Console.WriteLine("--------------------------------------------------");
             Console.WriteLine("Program options:");
             Console.WriteLine("1] Login");
+            Console.WriteLine("2] Vote statistics");
             Console.WriteLine("q] Quit");
             Console.ForegroundColor = ConsoleColor.White;
-            char[] options = {'Q', 'q', '1'};
+            char[] options = {'Q', 'q', '1', '2'};
             char key;
             do
             {
@@ -165,6 +179,8 @@ namespace FpElectionCalculator.CLI
             {
                 case '1':
                     return KeyOption.Login;
+                case '2':
+                    return KeyOption.VoteStatistics;
                 default:
                     return KeyOption.Quit;
             }
@@ -202,6 +218,7 @@ namespace FpElectionCalculator.CLI
     internal enum KeyOption
     {
         Quit,
-        Login
+        Login,
+        VoteStatistics
     }
 }
