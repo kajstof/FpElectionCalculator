@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FpElectionCalculator.Domain.DbModels;
 
 namespace FpElectionCalculator.Domain.Services
@@ -15,6 +16,7 @@ namespace FpElectionCalculator.Domain.Services
         public string GetVoteStatistics()
         {
             // TODO
+            throw new NotImplementedException();
         }
     }
 }
