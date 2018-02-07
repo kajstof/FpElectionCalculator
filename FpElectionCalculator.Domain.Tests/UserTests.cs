@@ -53,6 +53,7 @@ namespace FpElectionCalculator.Domain.Tests
             return loginValidation;
         }
 
+        [Trait("Category", "notcircleci")]
         [Theory]
         [InlineData("Jan", "Nowak", "86030218897")]
         [InlineData("Adam", "Adamski", "86110218898")]
@@ -63,6 +64,7 @@ namespace FpElectionCalculator.Domain.Tests
             Assert.False(loginValidation.Error && loginValidation.Warning);
         }
 
+        [Trait("Category", "notcircleci")]
         [Theory]
         [InlineData("J", "Nowak", "86030218897")]
         [InlineData("Adam", "A", "86110218898")]
@@ -74,6 +76,7 @@ namespace FpElectionCalculator.Domain.Tests
             Assert.True(loginValidation.Error || loginValidation.Warning);
         }
 
+        [Trait("Category", "notcircleci")]
         [Fact]
         public void ReturnsLoginValidatorErrors()
         {
