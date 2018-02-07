@@ -2,11 +2,8 @@ language: csharp
 solution: FpElectionCalculator.sln
 mono: none
 dotnet: 2.1.4
-install:
-  - nuget restore
-  - nuget install xunit.runners
 script:
   - dotnet restore
   - dotnet build
   - dotnet test FpElectionCalculator.Domain.Tests/FpElectionCalculator.Domain.Tests.csproj
-  - dotnet xunit FpElectionCalculator.Domain.Tests/FpElectionCalculator.Domain.Tests.csproj
+
