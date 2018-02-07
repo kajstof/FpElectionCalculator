@@ -101,6 +101,18 @@ CREATE TABLE [Parties] (
 
 GO
 
+CREATE TABLE [Users] (
+    [UserId] int NOT NULL IDENTITY,
+    [Comment] nvarchar(max) NULL,
+    [FirstName] nvarchar(50) NULL,
+    [LastName] nvarchar(50) NULL,
+    [PeselHashed] nvarchar(max) NULL,
+    [Voted] bit NOT NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([UserId])
+);
+
+GO
+
 CREATE TABLE [Candidates] (
     [CandidateId] int NOT NULL IDENTITY,
     [Name] nvarchar(100) NULL,
@@ -111,15 +123,13 @@ CREATE TABLE [Candidates] (
 
 GO
 
-CREATE TABLE [Users] (
-    [UserId] int NOT NULL IDENTITY,
-    [CandidateId] int NOT NULL,
-    [Comment] nvarchar(max) NULL,
-    [FirstName] nvarchar(50) NULL,
-    [LastName] nvarchar(50) NULL,
-    [Pesel] nvarchar(max) NULL,
-    CONSTRAINT [PK_Users] PRIMARY KEY ([UserId]),
-    CONSTRAINT [FK_Users_Candidates_CandidateId] FOREIGN KEY ([CandidateId]) REFERENCES [Candidates] ([CandidateId]) ON DELETE CASCADE
+CREATE TABLE [Votes] (
+    [VoteId] int NOT NULL IDENTITY,
+    [CandidateId] int NULL,
+    [UserId] int NOT NULL,
+    CONSTRAINT [PK_Votes] PRIMARY KEY ([VoteId]),
+    CONSTRAINT [FK_Votes_Candidates_CandidateId] FOREIGN KEY ([CandidateId]) REFERENCES [Candidates] ([CandidateId]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Votes_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([UserId]) ON DELETE CASCADE
 );
 
 GO
@@ -128,12 +138,16 @@ CREATE INDEX [IX_Candidates_PartyId] ON [Candidates] ([PartyId]);
 
 GO
 
-CREATE INDEX [IX_Users_CandidateId] ON [Users] ([CandidateId]);
+CREATE INDEX [IX_Votes_CandidateId] ON [Votes] ([CandidateId]);
+
+GO
+
+CREATE INDEX [IX_Votes_UserId] ON [Votes] ([UserId]);
 
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20180201013832_CreateElectionDb', N'2.0.1-rtm-125');
+VALUES (N'20180207103503_CreateElectionDb', N'2.0.1-rtm-125');
 
 GO
 ```
