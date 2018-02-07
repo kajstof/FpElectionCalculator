@@ -39,15 +39,13 @@ namespace FpElectionCalculator.CLI
                 //dbInitializer.DeleteTablesInDatabase();
                 dbInitializer.InitializeDbWithCandidatesAndParties();
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Program options:");
-                Console.WriteLine("1] Login");
-                Console.WriteLine("q] Quit");
-                Console.Write("What are you going to do: ");
-                ConsoleKeyInfo keyInfo;
-                char[] options = {'q', '1'};
-                while (options.Any(c => c.Equals(keyInfo.KeyChar)))
+                char key;
+                while (key = ReadKeyOption())
                 {
+                    switch (key)
+                    {
+                        
+                    }
                     do
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
@@ -137,8 +135,32 @@ namespace FpElectionCalculator.CLI
                         }
                     } while (true);
 
-                    keyInfo = Console.ReadKey();
+                    key = Console.ReadKey();
                 }
+            }
+        }
+
+        private static KeyOption ReadKeyOption()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("Program options:");
+            Console.WriteLine("1] Login");
+            Console.WriteLine("q] Quit");
+            Console.ForegroundColor = ConsoleColor.White;
+            char[] options = {'Q', 'q', '1'};
+            char key = 'q';
+            do
+            {
+                Console.Write("What are you going to do: ");
+            } while (options.Any(c => c.Equals(key = Console.ReadKey().KeyChar)));
+
+            switch (key)
+            {
+                case '1':
+                    return KeyOption.Login;
+                default:
+                    return KeyOption.Quit;
             }
         }
 
@@ -169,5 +191,11 @@ namespace FpElectionCalculator.CLI
             LoginCredentials loginCredentials = new LoginCredentials(firstName, lastName, pesel);
             return loginCredentials;
         }
+    }
+
+    internal enum KeyOption
+    {
+        Quit,
+        Login
     }
 }
