@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using FpElectionCalculator.Domain.DbModels;
 using FpElectionCalculator.Domain.Models;
 using FpElectionCalculator.Domain.Services;
@@ -62,28 +61,34 @@ namespace FpElectionCalculator.CLI
         private static void VoteStatistics(ElectionDbContext context)
         {
             GetDbVotesStatistics statistics = new GetDbVotesStatistics(context);
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine($"Total votes: {statistics.GetVotesCount()}");
             var validVotes = statistics.GetValidVotesCount();
-            Console.WriteLine($"Valid votes: {validVotes.Item1} ({validVotes.Item2:F4}%)");
-            (int invalidVotes, double invalidVotesPercent) = statistics.GetInvalidVotesCount();
-            Console.WriteLine($"Invalid votes: {invalidVotes} ({invalidVotesPercent:F4}%)");
-            List<CandidateResult> votesResults = statistics.GetVotesResults();
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("No] {0,-50} | Votes | Votes [%]", "Candidate / Party");
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            int counter = 1;
-            foreach (var vote in votesResults)
+            if (validVotes.Item1 != 0)
             {
-                var name = $"{vote.CandidateName} / {vote.PartyName}";
-                Console.WriteLine("{0,2:D}] {1,-50} | {2,5} | {3,8:F4}%", counter++, name, vote.VotesCount, vote.VotesPercent);
+                Console.WriteLine($"Valid votes: {validVotes.Item1} ({validVotes.Item2:F4}%)");
+                (int invalidVotes, double invalidVotesPercent) = statistics.GetInvalidVotesCount();
+                Console.WriteLine($"Invalid votes: {invalidVotes} ({invalidVotesPercent:F4}%)");
+                List<CandidateResult> votesResults = statistics.GetVotesResults();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("-----------------------------------------------------------------------------");
+                Console.WriteLine(" No | {0,-50} | Votes | Votes [%]", "Candidate / Party");
+                Console.WriteLine("-----------------------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                int counter = 1;
+                foreach (var vote in votesResults)
+                {
+                    var name = $"{vote.CandidateName} / {vote.PartyName}";
+                    Console.WriteLine(" {0,2:D} | {1,-50} | {2,5} | {3,8:F4}%", counter++, name, vote.VotesCount,
+                        vote.VotesPercent);
+                }
             }
         }
 
         private static void LoginUserMethod(ElectionDbContext context, WebserviceRawCommunication webservice)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("----- Login to system -----");
+            Console.WriteLine("----- Login to system -------------------------------------------------------");
             LoginCredentials loginCredentials = GetCredentialsFromConsole();
             User user = new Domain.Models.User(loginCredentials, context, webservice);
             LoginValidation loginValidation = user.Login();
@@ -172,7 +177,7 @@ namespace FpElectionCalculator.CLI
         private static KeyOption ReadKeyOption()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("-----------------------------------------------------------------------------");
             Console.WriteLine("Program options:");
             Console.WriteLine("1] Login");
             Console.WriteLine("2] Vote statistics");
@@ -201,10 +206,10 @@ namespace FpElectionCalculator.CLI
         private static void ConsoleProlog()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("==================================================");
-            Console.WriteLine("== Election Calculator - Future Processing =======");
-            Console.WriteLine("== Author: Krzysztof Krysiak | 2018 ==============");
-            Console.WriteLine("==================================================");
+            Console.WriteLine("=============================================================================");
+            Console.WriteLine("== Election Calculator - Future Processing ==================================");
+            Console.WriteLine("== Author: Krzysztof Krysiak ========================================= 2018 =");
+            Console.WriteLine("=============================================================================");
         }
 
         private static LoginCredentials GetCredentialsFromConsole()
